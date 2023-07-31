@@ -11,8 +11,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Shovel
+  - Block
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Inventory
+    uniqueID: 3461312923
+    locked: 0
+  - name: Block
+    uniqueID: 710988461
     locked: 0
