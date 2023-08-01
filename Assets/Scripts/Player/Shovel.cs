@@ -6,8 +6,10 @@ using System.Linq;
 
 public class Shovel : MonoBehaviour, ICollision
 {
-    [SerializeField] private int _collisionTime;
-
+    private Game game => Game.Instance;
+    private ShovelData _shovelData;
+    private int _heal;
+    private int _damage;
     private Rigidbody rb;
     private Vector3 _mousePos;
     private Inventory _currentInventory;
@@ -29,8 +31,27 @@ public class Shovel : MonoBehaviour, ICollision
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        _isActive = false;
     }
+
+    private void Start()
+    {
+        Init();
+    }
+
+    private void Init()
+    {
+        _isActive = false;
+        _shovelData = game.Data.ListShoveConfig.FirstOrDefault(shovel => shovel.ShovelType == _type);
+        _damage = _shovelData.Damage;
+        _heal = _shovelData.Heal;
+    }
+
+    public void Onplay()
+    {
+        _isActive = true;
+        rb.useGravity = true;
+    }
+
 
     private void OnCollisionEnter(Collision other)
     {
@@ -38,13 +59,13 @@ public class Shovel : MonoBehaviour, ICollision
         if (_isActive)
         {
             rb.AddForce(Vector3.up * 8, ForceMode.Impulse);
-        }
 
-        var block = other.gameObject.GetComponentInParent<ICollision>();
-        if (block != null)
-        {
-            DecreaseCollisionTime();
-            block.DecreaseCollisionTime();
+            var block = other.gameObject.GetComponentInParent<ICollision>();
+            if (block != null)
+            {
+                DecreaseCollisionTime();
+                block.DecreaseCollisionTime();
+            }
         }
     }
 
@@ -55,13 +76,13 @@ public class Shovel : MonoBehaviour, ICollision
 
     public void DecreaseCollisionTime()
     {
-        _collisionTime--;
+        _heal--;
         DestroyByCollisionTime();
     }
 
     public void DestroyByCollisionTime()
     {
-        if (_collisionTime < 1)
+        if (_heal < 1)
         {
             Destroy(this.gameObject);
         }
@@ -84,6 +105,8 @@ public class Shovel : MonoBehaviour, ICollision
 
     private void OnMouseUp()
     {
+        if (_isActive) return;
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits;
         hits = Physics.RaycastAll(ray, Mathf.Infinity);
