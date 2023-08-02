@@ -6,7 +6,7 @@ using UnityEngine;
 public class ShovelData
 {
     public ShovelType ShovelType;
-    public GameObject Shovel;
+    public GameObject ShovelPrefab;
     public int Damage;
     public int Heal;
 }

@@ -5,6 +5,9 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private Shovel _currentShovel;
+
+    private Game game => Game.Instance;
+
     public Shovel CurrentShovel
     {
         get => _currentShovel;
@@ -23,9 +26,26 @@ public class Inventory : MonoBehaviour
 
     public void MergeShovel()
     {
-        //instantiate new shovel
+        CreateNewShovel((ShovelType)_currentShovel.Type + 1);
+    }
 
-        //delete current shovel
-        _currentShovel.LevelUpForShavel();
+    public void CreateNewShovel(ShovelType shovelType)
+    {
+        var newShovelData = game.GetShovelData(shovelType);
+        GameObject newShovel = Instantiate(newShovelData.ShovelPrefab, transform.position, Quaternion.identity);
+
+        Shovel oldShovel = null;
+
+        if (_currentShovel != null)
+        {
+            oldShovel = _currentShovel;
+            oldShovel.gameObject.SetActive(false);
+        }
+
+        Shovel newShovelScript = newShovel.GetComponent<Shovel>();
+        _currentShovel = newShovelScript;
+        newShovelScript.CurrentInventory = this;
+
+        if (oldShovel != null) Destroy(oldShovel.gameObject);
     }
 }

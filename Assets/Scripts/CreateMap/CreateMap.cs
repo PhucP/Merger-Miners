@@ -35,10 +35,10 @@ public class CreateMap : MonoBehaviour
 
     private void SpawnInventory()
     {
-        SpawnMap(_heightInv, _widthInv, _parentInv, _inventoryPrefab);
+        SpawnMap(_heightInv, _widthInv, _parentInv, _inventoryPrefab, Game.Instance.ListInventory);
     }
 
-    private void SpawnMap(int width, int height, Transform parent, GameObject prefab)
+    private void SpawnMap(int width, int height, Transform parent, GameObject prefab, List<Inventory> list = null)
     {
         var startPos = CalucalteStartPos();
         for (int i = 0; i < height; i++)
@@ -47,6 +47,8 @@ public class CreateMap : MonoBehaviour
             {
                 var grid = Instantiate(prefab, Vector3.zero, Quaternion.identity, parent);
                 grid.transform.localPosition = new Vector3(startPos + i * Scale, -j * Scale, 0);
+
+                list?.Add(grid.GetComponent<Inventory>());
             }
         }
     }

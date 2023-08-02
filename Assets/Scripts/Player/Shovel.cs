@@ -7,6 +7,8 @@ using System.Linq;
 public class Shovel : MonoBehaviour, ICollision
 {
     private Game game => Game.Instance;
+    private UIManager ui => UIManager.Instance;
+
     private ShovelData _shovelData;
     private int _heal;
     private int _damage;
@@ -27,10 +29,22 @@ public class Shovel : MonoBehaviour, ICollision
         get => _isActive;
         set => _isActive = value;
     }
+    public Inventory CurrentInventory
+    {
+        get => _currentInventory;
+        set => _currentInventory = value;
+    }
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        ui.PlayAction += OnPlayEvent;
+    }
+
+    private void OnDisable()
+    {
+        //unsubcribe for play action
+        ui.PlayAction -= OnPlayEvent;
     }
 
     private void Start()
@@ -46,7 +60,7 @@ public class Shovel : MonoBehaviour, ICollision
         _heal = _shovelData.Heal;
     }
 
-    public void Onplay()
+    public void OnPlayEvent()
     {
         _isActive = true;
         rb.useGravity = true;
