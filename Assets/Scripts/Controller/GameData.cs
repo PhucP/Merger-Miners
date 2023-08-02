@@ -10,4 +10,10 @@ public class GameData
 
     [Header("Shovel Config")]
     public List<ShovelData> ListShoveConfig;
+
+    [Header("Block Config")]
+    public List<BlockData> ListBlockConfig;
+
+    [Header("VFX")]
+    public List<GameObject> listVFX; 
 }

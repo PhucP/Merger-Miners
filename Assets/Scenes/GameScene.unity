@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.14963791, g: 0.16817814, b: 0.17387138, a: 1}
+  m_IndirectSpecularColor: {r: 0.18386836, g: 0.2290156, b: 0.3031127, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -856,7 +856,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 0.9
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -913,14 +913,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.028793924, y: 0, z: 0, w: 0.9995854}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 3.3, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!1 &807898316
 GameObject:
   m_ObjectHideFlags: 0
@@ -1043,7 +1043,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -1144,11 +1144,42 @@ MonoBehaviour:
   _widthGrid: 4
   _heightInv: 2
   _widthInv: 4
-  _gridPrefab: {fileID: 5260683605343863263, guid: dd84e92ef86580f4ab7f1493e4a198c6, type: 3}
+  _gridPrefab: {fileID: 5641579935495374930, guid: 9353cb3e4e213c7458c80de89ee20170, type: 3}
   _parentGrid: {fileID: 1042676037}
   _parentInv: {fileID: 477232496}
   _inventoryPrefab: {fileID: 2455439299254242304, guid: b8e737702661a52429a865a2d483d020, type: 3}
   Scale: 1.25
+--- !u!1 &1249022458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1249022459}
+  m_Layer: 0
+  m_Name: Weapon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1249022459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249022458}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1611558379}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1310783984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1374,6 +1405,7 @@ Transform:
   - {fileID: 672171675}
   - {fileID: 1753841242}
   - {fileID: 704633194}
+  - {fileID: 1249022459}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1393,19 +1425,84 @@ MonoBehaviour:
     _saveData: {fileID: 11400000, guid: 7ca09cb571eb5c944a3f04401c916d64, type: 2}
     ListShoveConfig:
     - ShovelType: 0
-      ShovelPrefab: {fileID: 6803549040610812236, guid: c489a308105db67428ec6e0d3a0682cd, type: 3}
-      Damage: 5
-      Heal: 5
+      ShovelPrefab: {fileID: 5630089750686875104, guid: 1a6e55f1a825b7f4384f5a5ae575df7b, type: 3}
+      Damage: 0
+      Heal: 1000000
     - ShovelType: 1
-      ShovelPrefab: {fileID: 6803549040610812236, guid: 90122ff6e6117994bbaabbe1328c62d2, type: 3}
-      Damage: 10
-      Heal: 8
+      ShovelPrefab: {fileID: 8575356319253369312, guid: 168a0a4cf3dee844ab0711dc26444ea8, type: 3}
+      Damage: 3
+      Heal: 9
     - ShovelType: 2
-      ShovelPrefab: {fileID: 6803549040610812236, guid: 052cb0a7f4f5dcb46886cdd36ead52ae, type: 3}
-      Damage: 15
+      ShovelPrefab: {fileID: 6909725771485223921, guid: 4f00f741af0142c419ad3bf400737f84, type: 3}
+      Damage: 4
       Heal: 10
+    - ShovelType: 3
+      ShovelPrefab: {fileID: 2401329977306803413, guid: 28df5b688e304584ebef3e5ad64f50ea, type: 3}
+      Damage: 5
+      Heal: 10
+    - ShovelType: 4
+      ShovelPrefab: {fileID: 1174707099198624375, guid: 597586888369bb840b009e8966e41fc9, type: 3}
+      Damage: 8
+      Heal: 15
+    - ShovelType: 5
+      ShovelPrefab: {fileID: 7534511444858719071, guid: 02830222d76e1d840b4a66aca544d4ac, type: 3}
+      Damage: 10
+      Heal: 15
+    - ShovelType: 6
+      ShovelPrefab: {fileID: 3043871765433512249, guid: 380565758673fd04e9ad512fb10dde9c, type: 3}
+      Damage: 10
+      Heal: 20
+    - ShovelType: 7
+      ShovelPrefab: {fileID: 3033386879086395912, guid: b5b88e1e87d2bdf4a930cb06aeeeb9b4, type: 3}
+      Damage: 10
+      Heal: 22
+    - ShovelType: 8
+      ShovelPrefab: {fileID: 4167679839967398952, guid: 34c5221b98fb1cf4b9c494f5f68ef829, type: 3}
+      Damage: 15
+      Heal: 15
+    - ShovelType: 9
+      ShovelPrefab: {fileID: 713999142785563201, guid: 719cc055814652b4791445d78765740d, type: 3}
+      Damage: 15
+      Heal: 20
+    ListBlockConfig:
+    - BlockPrefab: {fileID: 1218236285264841094, guid: 72e3824e4fda2e447bea587a09bf1815, type: 3}
+      Heal: 8
+      Type: 0
+      Damage: 1
+    - BlockPrefab: {fileID: 497502483279595260, guid: ed29c11a00970e745b8f68afbbaedcb3, type: 3}
+      Heal: 5
+      Type: 1
+      Damage: 2
+    - BlockPrefab: {fileID: 4609408569202023102, guid: cab399aee7a44d84d9acb4e2e6a55798, type: 3}
+      Heal: 9
+      Type: 2
+      Damage: 1
+    - BlockPrefab: {fileID: 790387703888725692, guid: 66c935aa4e1a008489b10e369f466502, type: 3}
+      Heal: 5
+      Type: 3
+      Damage: 2
+    - BlockPrefab: {fileID: 7718848510109648134, guid: 38b62d5ca18b5424b89cee21930b73e2, type: 3}
+      Heal: 5
+      Type: 4
+      Damage: 1
+    - BlockPrefab: {fileID: 6992468499781306099, guid: 98284adced4bdcc429fde3b1dd6da7eb, type: 3}
+      Heal: 7
+      Type: 5
+      Damage: 3
+    - BlockPrefab: {fileID: 5641579935495374930, guid: 9353cb3e4e213c7458c80de89ee20170, type: 3}
+      Heal: 8
+      Type: 6
+      Damage: 2
+    - BlockPrefab: {fileID: 6839172797251305020, guid: 621a244d157411d4d8a888231346b1ef, type: 3}
+      Heal: 6
+      Type: 7
+      Damage: 1
+    listVFX:
+    - {fileID: 284991888791631204, guid: 02b5aba88d9d45d4fb8edd505fab0521, type: 3}
+    - {fileID: 6809516476468820538, guid: 6fac1fa4efef2ce4f85c3b8f5057d67d, type: 3}
   ListInventory: []
   ListShovel: []
+  weaponParent: {fileID: 1249022459}
 --- !u!1 &1753841241
 GameObject:
   m_ObjectHideFlags: 0

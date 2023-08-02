@@ -9,6 +9,8 @@ public class Game : MonoBehaviour
     public GameData Data;
     public List<Inventory> ListInventory;
     public List<Shovel> ListShovel;
+    
+    public Transform weaponParent;
 
 
     private void Awake()

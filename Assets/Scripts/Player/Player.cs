@@ -8,10 +8,11 @@ public class Player : MonoBehaviour
     private Game game => Game.Instance;
     public void BuyShovel()
     {
-        Inventory emptyInv = game.ListInventory.FirstOrDefault(inv => inv.CurrentShovel == null);
-        if(emptyInv != null)
+        List<Inventory> emptyInv = game.ListInventory.FindAll(inv => inv.CurrentShovel == null);
+        if (emptyInv.Count != 0)
         {
-            emptyInv.CreateNewShovel(ShovelType.LV1);
+            int ranIndex = (int)Random.Range(0, emptyInv.Count);
+            emptyInv[ranIndex].CreateNewShovel(ShovelType.LV1);
         }
     }
 }

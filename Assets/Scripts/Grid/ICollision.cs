@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface ICollision
 {
-    public void DecreaseCollisionTime();
-    public void DestroyByCollisionTime();
+    public void TakeDamage(int damage);
+    public void DestroyByHeal();
 }

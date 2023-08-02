@@ -5,11 +5,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "LevelData", menuName = "Merge MIner/LevelData", order = 0)]
 public class LevelData : ScriptableObject
 {
-    [Header("Inventory")]
-    public int WidthInv;
-    public int HeightInv;
+    [Header("Size")]
+    public int Width;
+    public int GridHeight, InventoryHeight;
+    public float Space;
 
-    [Header("Grid")]
-    public int WidthGrid;
-    public int HeightGrid;
+    [Header("Gird")]
+    public List<GridData> ListGrid;
+
+    [Header("Camera Tranform")]
+    public float AnchorsPosY, FieldOfView;
+}
+
+[System.Serializable]
+public class GridData
+{
+    public BlockType Type;
+    public Vector2Int Position;
 }

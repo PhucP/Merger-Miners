@@ -12,7 +12,7 @@ public class Shovel : MonoBehaviour, ICollision
     private ShovelData _shovelData;
     private int _heal;
     private int _damage;
-    private Rigidbody rb;
+    private Rigidbody rb => GetComponent<Rigidbody>();
     private Vector3 _mousePos;
     private Inventory _currentInventory;
 
@@ -37,7 +37,6 @@ public class Shovel : MonoBehaviour, ICollision
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
         ui.PlayAction += OnPlayEvent;
     }
 
@@ -63,43 +62,45 @@ public class Shovel : MonoBehaviour, ICollision
     public void OnPlayEvent()
     {
         _isActive = true;
-        rb.useGravity = true;
+
+        if (rb != null) rb.useGravity = true;
     }
 
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        //move the shovel
-        if (_isActive)
+        var block = other.gameObject.GetComponent<Block>();
+        if (block != null && _isActive)
         {
-            rb.AddForce(Vector3.up * 8, ForceMode.Impulse);
-
-            var block = other.gameObject.GetComponentInParent<ICollision>();
-            if (block != null)
             {
-                DecreaseCollisionTime();
-                block.DecreaseCollisionTime();
+                if (_damage < block.Heal) rb.velocity = Vector3.up * 10f;
+                TakeDamage(block.Damage);
+                block.TakeDamage(_damage);
+
+                var hitVFX =  Instantiate(game.Data.listVFX[0], block.transform.position, Quaternion.identity);
+                Destroy(hitVFX, 2f);
             }
         }
     }
 
     private void Update()
     {
-        transform.Rotate(Vector3.forward, 65 * Time.deltaTime);
+        if (_isActive) transform.Rotate(Vector3.forward, 175 * Time.deltaTime);
     }
 
-    public void DecreaseCollisionTime()
+    public void TakeDamage(int damage)
     {
-        _heal--;
-        DestroyByCollisionTime();
-    }
+        _heal -= damage;
 
-    public void DestroyByCollisionTime()
-    {
         if (_heal < 1)
         {
-            Destroy(this.gameObject);
+            DestroyByHeal();
         }
+    }
+
+    public void DestroyByHeal()
+    {
+        Destroy(this.gameObject);
     }
 
     private void OnMouseDown()

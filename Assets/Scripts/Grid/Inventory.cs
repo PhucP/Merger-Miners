@@ -32,7 +32,11 @@ public class Inventory : MonoBehaviour
     public void CreateNewShovel(ShovelType shovelType)
     {
         var newShovelData = game.GetShovelData(shovelType);
-        GameObject newShovel = Instantiate(newShovelData.ShovelPrefab, transform.position, Quaternion.identity);
+        GameObject newShovel = Instantiate(newShovelData.ShovelPrefab, transform.position, Quaternion.identity, game.weaponParent);
+
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+        var upgradeVFX = Instantiate(game.Data.listVFX[1], pos, Quaternion.Euler(-90, 0, 0));
+        Destroy(upgradeVFX, 2f);
 
         Shovel oldShovel = null;
 
