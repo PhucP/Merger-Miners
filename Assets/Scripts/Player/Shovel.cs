@@ -54,7 +54,7 @@ public class Shovel : MonoBehaviour, ICollision
     private void Init()
     {
         _isActive = false;
-        _shovelData = game.Data.ListShoveConfig.FirstOrDefault(shovel => shovel.ShovelType == _type);
+        _shovelData = game.GetShovelData(_type);
         _damage = _shovelData.Damage;
         _heal = _shovelData.Heal;
     }

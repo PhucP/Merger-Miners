@@ -1137,18 +1137,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1042676036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 601d839095cad0d4b8e9f36c36a78dbb, type: 3}
+  m_Script: {fileID: 11500000, guid: b32904e7fcfae044e85a16ae3a7885cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _heightGrid: 5
-  _widthGrid: 4
-  _heightInv: 2
-  _widthInv: 4
-  _gridPrefab: {fileID: 5641579935495374930, guid: 9353cb3e4e213c7458c80de89ee20170, type: 3}
-  _parentGrid: {fileID: 1042676037}
-  _parentInv: {fileID: 477232496}
-  _inventoryPrefab: {fileID: 2455439299254242304, guid: b8e737702661a52429a865a2d483d020, type: 3}
-  Scale: 1.25
+  _blockParent: {fileID: 1249022459}
+  _inventoryParent: {fileID: 477232496}
 --- !u!1 &1249022458
 GameObject:
   m_ObjectHideFlags: 0
@@ -1423,45 +1416,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     _saveData: {fileID: 11400000, guid: 7ca09cb571eb5c944a3f04401c916d64, type: 2}
+    LevelConfig: {fileID: 11400000, guid: 5431788d27f7a0245aa28c842970a955, type: 2}
     ListShoveConfig:
-    - ShovelType: 0
-      ShovelPrefab: {fileID: 5630089750686875104, guid: 1a6e55f1a825b7f4384f5a5ae575df7b, type: 3}
+    - Type: 0
+      Prefab: {fileID: 0}
       Damage: 0
       Heal: 1000000
-    - ShovelType: 1
-      ShovelPrefab: {fileID: 8575356319253369312, guid: 168a0a4cf3dee844ab0711dc26444ea8, type: 3}
+    - Type: 0
+      Prefab: {fileID: 0}
       Damage: 3
       Heal: 9
-    - ShovelType: 2
-      ShovelPrefab: {fileID: 6909725771485223921, guid: 4f00f741af0142c419ad3bf400737f84, type: 3}
+    - Type: 0
+      Prefab: {fileID: 0}
       Damage: 4
       Heal: 10
-    - ShovelType: 3
-      ShovelPrefab: {fileID: 2401329977306803413, guid: 28df5b688e304584ebef3e5ad64f50ea, type: 3}
+    - Type: 0
+      Prefab: {fileID: 0}
       Damage: 5
       Heal: 10
-    - ShovelType: 4
-      ShovelPrefab: {fileID: 1174707099198624375, guid: 597586888369bb840b009e8966e41fc9, type: 3}
+    - Type: 0
+      Prefab: {fileID: 0}
       Damage: 8
       Heal: 15
-    - ShovelType: 5
-      ShovelPrefab: {fileID: 7534511444858719071, guid: 02830222d76e1d840b4a66aca544d4ac, type: 3}
+    - Type: 0
+      Prefab: {fileID: 0}
       Damage: 10
       Heal: 15
-    - ShovelType: 6
-      ShovelPrefab: {fileID: 3043871765433512249, guid: 380565758673fd04e9ad512fb10dde9c, type: 3}
+    - Type: 0
+      Prefab: {fileID: 0}
       Damage: 10
       Heal: 20
-    - ShovelType: 7
-      ShovelPrefab: {fileID: 3033386879086395912, guid: b5b88e1e87d2bdf4a930cb06aeeeb9b4, type: 3}
+    - Type: 0
+      Prefab: {fileID: 0}
       Damage: 10
       Heal: 22
-    - ShovelType: 8
-      ShovelPrefab: {fileID: 4167679839967398952, guid: 34c5221b98fb1cf4b9c494f5f68ef829, type: 3}
+    - Type: 0
+      Prefab: {fileID: 0}
       Damage: 15
       Heal: 15
-    - ShovelType: 9
-      ShovelPrefab: {fileID: 713999142785563201, guid: 719cc055814652b4791445d78765740d, type: 3}
+    - Type: 0
+      Prefab: {fileID: 0}
       Damage: 15
       Heal: 20
     ListBlockConfig:
@@ -1497,6 +1491,8 @@ MonoBehaviour:
       Heal: 6
       Type: 7
       Damage: 1
+    ListInventoryPrefab:
+    - {fileID: 2455439299254242304, guid: b8e737702661a52429a865a2d483d020, type: 3}
     listVFX:
     - {fileID: 284991888791631204, guid: 02b5aba88d9d45d4fb8edd505fab0521, type: 3}
     - {fileID: 6809516476468820538, guid: 6fac1fa4efef2ce4f85c3b8f5057d67d, type: 3}

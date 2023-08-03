@@ -7,12 +7,14 @@ public class GameData
 {
     [Header("Level Config")]
     public SaveData _saveData;
+    public LevelConfig LevelConfig;
 
     [Header("Shovel Config")]
     public List<ShovelData> ListShoveConfig;
 
     [Header("Block Config")]
     public List<BlockData> ListBlockConfig;
+    public List<GameObject> ListInventoryPrefab; 
 
     [Header("VFX")]
     public List<GameObject> listVFX; 

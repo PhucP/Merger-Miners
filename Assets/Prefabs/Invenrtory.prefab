@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 8434258982094675496}
   - component: {fileID: 1365278617586356880}
   m_Layer: 6
-  m_Name: Box
+  m_Name: Invenrtory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

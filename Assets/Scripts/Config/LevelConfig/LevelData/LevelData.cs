@@ -16,10 +16,3 @@ public class LevelData : ScriptableObject
     [Header("Camera Tranform")]
     public float AnchorsPosY, FieldOfView;
 }
-
-[System.Serializable]
-public class GridData
-{
-    public BlockType Type;
-    public Vector2Int Position;
-}

@@ -5,7 +5,7 @@ using System.Linq;
 
 public class Block : MonoBehaviour, ICollision
 {
-    private Game game => Game.Instance;
+    private Game Game => Game.Instance;
     private BlockData _blockData;
     private int _heal;
     private int _damage;
@@ -28,7 +28,7 @@ public class Block : MonoBehaviour, ICollision
 
     private void Init()
     {
-        _blockData = game.Data.ListBlockConfig.FirstOrDefault(block => block.Type == _type);
+        _blockData = Game.Data.ListBlockConfig.FirstOrDefault(block => block.Type == _type);
         _heal = _blockData.Heal;
         _damage = _blockData.Damage;
     }

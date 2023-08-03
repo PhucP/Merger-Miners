@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class ShovelData
 {
-    public ShovelType ShovelType;
-    public GameObject ShovelPrefab;
+    public ShovelType Type;
+    public GameObject Prefab;
     public int Damage;
     public int Heal;
 }

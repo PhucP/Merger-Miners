@@ -7,5 +7,7 @@ using UnityEngine;
 public class SaveData : ScriptableObject
 {
     public int Level;
-    public LevelConfig LevelConfig;
+    public int Gold;
+    public int Exp;
+    public List<InventoryData> listInvData;
 }
