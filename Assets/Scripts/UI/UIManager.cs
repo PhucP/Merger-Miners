@@ -20,12 +20,12 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         Singleton();
-
-        WinPanel.SetActive(false);
     }
 
     private void Start()
     {
+        WinPanel.SetActive(false);
+
         Game.OnInit += OnInitEvent;
         Game.OnWin += OnWinEvent;
     }
@@ -42,6 +42,8 @@ public class UIManager : MonoBehaviour
 
     public void OnPlay()
     {
+        Game.Save(false);
+
         PlayAction?.Invoke();
         _playButton.gameObject.SetActive(false);
         _buyButton.gameObject.SetActive(false);

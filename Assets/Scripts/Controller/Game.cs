@@ -19,7 +19,7 @@ public class Game : MonoBehaviour
     public event Action OnInit;
     public event Action OnQuit;
     public event Action OnWin;
-    public event Action OnLose;
+    //public event Action OnLose;
 
     [HideInInspector] public bool IsPlay;
 
@@ -52,7 +52,6 @@ public class Game : MonoBehaviour
         ListShovel.Clear();
         ListBlock.Clear();
         IsPlay = false;
-
 
         OnInit?.Invoke();
     }
@@ -145,5 +144,16 @@ public class Game : MonoBehaviour
                 saveData.listInvData.Add(inventoryData);
             }
         }
+    }
+
+    public void ResetInven()
+    {
+        Data._saveData.listInvData.Clear();
+        RePlay();
+    }
+
+    public Inventory GetInventoryByPos(Vector2Int pos)
+    {
+        return ListInventory.FirstOrDefault(inventory => inventory.Position == pos);
     }
 }

@@ -10,7 +10,7 @@ public class Map : MonoBehaviour
 
 
     private Game Game => Game.Instance;
-    private void Start()
+    private void Awake()
     {
         Game.OnInit += OnInitEvent;
         Game.OnQuit += OnQuitEvent;
@@ -45,13 +45,37 @@ public class Map : MonoBehaviour
                 GameObject newInv = Instantiate(Game.Data.ListInventoryPrefab[0], Vector3.zero, Quaternion.identity, _inventoryParent);
                 newInv.transform.localPosition = new Vector3(startPos + j * levelData.Space, -i * levelData.Space, 0);
 
-                Game.ListInventory.Add(newInv.GetComponent<Inventory>());
+                Inventory newInvScript = newInv.GetComponent<Inventory>();
+                newInvScript.Position = new Vector2Int(i, j);
+                Game.ListInventory.Add(newInvScript);
             }
         }
 
-        if (saveData.Level != 1)
+        if (saveData.Level != 1 && saveData.listInvData.Count != 0)
         {
+            var listOldInv = saveData.listInvData;
+            CreateOldWeapon(listOldInv);
+        }
+    }
 
+    private void CreateOldWeapon(List<InventoryData> listOldInv)
+    {
+        foreach (var inventory in listOldInv)
+        {
+            Inventory currentInv = Game.GetInventoryByPos(inventory.Position);
+            if (currentInv != null)
+            {
+                currentInv.CreateNewShovel(inventory.Type, true);
+            }
+            else
+            {
+                List<Inventory> emptyInv = Game.ListInventory.FindAll(inv => inv.CurrentShovel == null);
+                if (emptyInv.Count != 0)
+                {
+                    int ranIndex = (int)Random.Range(0, emptyInv.Count);
+                    emptyInv[ranIndex].CreateNewShovel(inventory.Type, true);
+                }
+            }
         }
     }
 
@@ -70,7 +94,7 @@ public class Map : MonoBehaviour
 
     public void SpawnGift(float startPos, LevelData levelData)
     {
-        for(int i = 0; i < levelData.Width; i++)
+        for (int i = 0; i < levelData.Width; i++)
         {
             GameObject giftPrefab = Game.GetGift();
             GameObject newGift = Instantiate(giftPrefab, Vector3.zero, Quaternion.identity, _giftParent);
