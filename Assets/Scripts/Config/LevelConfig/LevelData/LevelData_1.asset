@@ -69,3 +69,5 @@ MonoBehaviour:
     Position: {x: 3, y: 2}
   AnchorsPosY: 0
   FieldOfView: 60
+  InvPosY: 4
+  BlockPosY: 0

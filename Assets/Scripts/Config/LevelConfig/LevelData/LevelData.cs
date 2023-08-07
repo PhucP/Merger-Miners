@@ -13,6 +13,7 @@ public class LevelData : ScriptableObject
     [Header("Gird")]
     public List<GridData> ListGrid;
 
-    [Header("Camera Tranform")]
+    [Header("Tranform")]
     public float AnchorsPosY, FieldOfView;
+    public float InvPosY, BlockPosY;
 }

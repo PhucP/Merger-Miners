@@ -16,18 +16,13 @@ public class Shovel : MonoBehaviour, ICollision
     private Vector3 _mousePos;
     private Inventory _currentInventory;
 
-    private bool _isActive;
+    private bool _isPlay;
     [SerializeField] private ShovelType _type;
 
     public ShovelType Type
     {
         get => _type;
         set => _type = value;
-    }
-    public bool IsActive
-    {
-        get => _isActive;
-        set => _isActive = value;
     }
     public Inventory CurrentInventory
     {
@@ -53,7 +48,7 @@ public class Shovel : MonoBehaviour, ICollision
 
     private void Init()
     {
-        _isActive = false;
+        _isPlay = game.IsPlay;
         _shovelData = game.GetShovelData(_type);
         _damage = _shovelData.Damage;
         _heal = _shovelData.Heal;
@@ -61,7 +56,7 @@ public class Shovel : MonoBehaviour, ICollision
 
     public void OnPlayEvent()
     {
-        _isActive = true;
+        _isPlay = true;
 
         if (rb != null) rb.useGravity = true;
     }
@@ -70,14 +65,14 @@ public class Shovel : MonoBehaviour, ICollision
     private void OnTriggerEnter(Collider other)
     {
         var block = other.gameObject.GetComponent<Block>();
-        if (block != null && _isActive)
+        if (block != null && _isPlay)
         {
             {
                 if (_damage < block.Heal) rb.velocity = Vector3.up * 10f;
                 TakeDamage(block.Damage);
                 block.TakeDamage(_damage);
 
-                var hitVFX =  Instantiate(game.Data.listVFX[0], block.transform.position, Quaternion.identity);
+                var hitVFX = Instantiate(game.Data.listVFX[0], block.transform.position, Quaternion.identity);
                 Destroy(hitVFX, 2f);
             }
         }
@@ -85,7 +80,7 @@ public class Shovel : MonoBehaviour, ICollision
 
     private void Update()
     {
-        if (_isActive) transform.Rotate(Vector3.forward, 175 * Time.deltaTime);
+        if (_isPlay) transform.Rotate(Vector3.forward, 175 * Time.deltaTime);
     }
 
     public void TakeDamage(int damage)
@@ -105,11 +100,14 @@ public class Shovel : MonoBehaviour, ICollision
 
     private void OnMouseDown()
     {
+        //disable mouse when play
+        if (_isPlay) return;
         _mousePos = Input.mousePosition - GetMousePos();
     }
 
     private void OnMouseDrag()
-    {
+    {        //disable mouse when play
+        if (_isPlay) return;
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - _mousePos);
     }
 
@@ -120,7 +118,7 @@ public class Shovel : MonoBehaviour, ICollision
 
     private void OnMouseUp()
     {
-        if (_isActive) return;
+        if (_isPlay) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit[] hits;

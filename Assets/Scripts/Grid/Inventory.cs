@@ -48,9 +48,15 @@ public class Inventory : MonoBehaviour
         }
 
         Shovel newShovelScript = newShovel.GetComponent<Shovel>();
+        game.ListShovel.Add(newShovelScript);
         _currentShovel = newShovelScript;
         newShovelScript.CurrentInventory = this;
 
-        if (oldShovel != null) Destroy(oldShovel.gameObject);
+        if (oldShovel != null)
+        {
+            game.ListShovel.Remove(oldShovel);
+            oldShovel.gameObject.SetActive(false);
+            Destroy(oldShovel.gameObject);
+        }
     }
 }

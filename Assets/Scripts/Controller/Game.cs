@@ -8,11 +8,20 @@ public class Game : MonoBehaviour
     public static Game Instance;
 
     public GameData Data;
-    public List<Inventory> ListInventory;
-    public List<Shovel> ListShovel;
     public Transform weaponParent;
 
+    [Header("Object")]
+    public List<Inventory> ListInventory;
+    public List<Shovel> ListShovel;
+    public List<Gift> ListGift;
+    public List<Block> ListBlock;
+
     public event Action OnInit;
+    public event Action OnQuit;
+    public event Action OnWin;
+    public event Action OnLose;
+
+    [HideInInspector] public bool IsPlay;
 
     private void Awake()
     {
@@ -38,6 +47,13 @@ public class Game : MonoBehaviour
 
     public void Init()
     {
+        ListGift.Clear();
+        ListInventory.Clear();
+        ListShovel.Clear();
+        ListBlock.Clear();
+        IsPlay = false;
+
+
         OnInit?.Invoke();
     }
 
@@ -56,5 +72,78 @@ public class Game : MonoBehaviour
     public LevelData GetLevelDataByLevel(int lv)
     {
         return Data.LevelConfig.ListLevelData[lv - 1];
+    }
+
+    public GameObject GetGift(int index = 0)
+    {
+        return Data.ListGiftPrefab[index];
+    }
+
+    private void OnApplicationQuit()
+    {
+        OnQuit?.Invoke();
+    }
+
+    public void Win()
+    {
+        OnWin?.Invoke();
+    }
+
+    public void Reset()
+    {
+        RemoveOldObject(ListInventory);
+        RemoveOldObject(ListShovel);
+        RemoveOldObject(ListGift);
+        RemoveOldObject(ListBlock);
+    }
+
+    public void RemoveOldObject<T>(List<T> list) where T : Component
+    {
+        foreach (var item in list)
+        {
+            if (item is Component component && item != null)
+            {
+                component.gameObject.SetActive(false);
+                Destroy(component.gameObject);
+            }
+        }
+
+        list.Clear();
+    }
+
+    public void RePlay()
+    {
+        Reset();
+        Init();
+    }
+
+    public void NextLevel()
+    {
+        Reset();
+        Data._saveData.Level += 1; 
+        Init();
+    }
+
+    public void Save(bool isResetData = true)
+    {
+        var saveData = Data._saveData;
+        saveData.Exp = 0;
+        saveData.Gold = 0;
+
+        saveData.listInvData.Clear();
+
+        if(isResetData) return;
+        
+        foreach(Inventory inventory in ListInventory)
+        {
+            if(inventory.CurrentShovel != null)
+            {
+                InventoryData inventoryData = new InventoryData();
+                inventoryData.Position = inventory.Position;
+                inventoryData.Type = inventory.CurrentShovel.Type;
+
+                saveData.listInvData.Add(inventoryData);
+            }
+        }
     }
 }

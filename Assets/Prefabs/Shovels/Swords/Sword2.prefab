@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6722596695548907842}
   - component: {fileID: 6722596696607533675}
   - component: {fileID: 6722596696607533672}
-  - component: {fileID: 148635359629154882}
   m_Layer: 6
   m_Name: Sword 02 Blue
   m_TagString: Untagged
@@ -84,19 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &148635359629154882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6722596696607533673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59a788c544ecd2d4ab66b4bc4a320917, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _type: 0
 --- !u!1 &8575356319253369312
 GameObject:
   m_ObjectHideFlags: 0

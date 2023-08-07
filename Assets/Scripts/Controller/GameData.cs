@@ -15,6 +15,7 @@ public class GameData
     [Header("Block Config")]
     public List<BlockData> ListBlockConfig;
     public List<GameObject> ListInventoryPrefab; 
+    public List<GameObject> ListGiftPrefab;
 
     [Header("VFX")]
     public List<GameObject> listVFX; 
