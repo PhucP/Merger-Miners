@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using DG.Tweening;
 public class Game : MonoBehaviour
 {
     public static Game Instance;
@@ -54,6 +55,7 @@ public class Game : MonoBehaviour
         IsPlay = false;
 
         UIManager.Instance.UpdateCoinText(Data._saveData.Gold);
+        Camera.main.transform.position = new Vector3(0, 0, -10);
 
         OnInit?.Invoke();
     }
@@ -97,6 +99,8 @@ public class Game : MonoBehaviour
         RemoveOldObject(ListShovel);
         RemoveOldObject(ListGift);
         RemoveOldObject(ListBlock);
+
+        DOTween.KillAll();
     }
 
     public void RemoveOldObject<T>(List<T> list) where T : Component

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Linq;
+using DG.Tweening;
 
 public class Shovel : MonoBehaviour, ICollision
 {
@@ -20,7 +21,7 @@ public class Shovel : MonoBehaviour, ICollision
     private bool _isPlay;
     [SerializeField] private ShovelType _type;
 
-    public int Cost {get; set;}
+    public int Cost { get; set; }
     public ShovelType Type
     {
         get => _type;
@@ -69,14 +70,13 @@ public class Shovel : MonoBehaviour, ICollision
         var block = other.gameObject.GetComponent<Block>();
         if (block != null && _isPlay)
         {
-            {
-                if (_damage < block.Heal) rb.velocity = Vector3.up * 10f;
-                TakeDamage(block.Damage);
-                block.TakeDamage(_damage);
+            if (_damage < block.Heal) rb.velocity = Vector3.up * 10f;
+            TakeDamage(block.Damage);
+            block.TakeDamage(_damage);
 
-                var hitVFX = Instantiate(game.Data.listVFX[0], block.transform.position, Quaternion.identity);
-                Destroy(hitVFX, 2f);
-            }
+            var hitVFX = Instantiate(game.Data.listVFX[0], block.transform.position, Quaternion.identity);
+            Destroy(hitVFX, 2f);
+
         }
     }
 

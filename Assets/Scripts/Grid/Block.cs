@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using DG.Tweening;
 
 public class Block : MonoBehaviour, ICollision
 {
@@ -9,10 +10,12 @@ public class Block : MonoBehaviour, ICollision
     private BlockData _blockData;
     private int _heal;
     private int _damage;
+    [SerializeField]private Vector2Int _pos;
 
     [SerializeField] private BlockType _type;
 
     public int Damage { get => _damage; }
+    public Vector2Int Pos { get => _pos; set => _pos = value; }
 
     public int Heal { get => _heal; }
     public BlockType Type
@@ -37,6 +40,19 @@ public class Block : MonoBehaviour, ICollision
     {
         _heal -= damage;
         DestroyByHeal();
+        MoveCamera();
+    }
+
+    public void MoveCamera()
+    {
+        int MaxPosy = Game.GetLevelDataByLevel(Game.Data._saveData.Level).GridHeight - 2;
+
+        if (_pos.y > MaxPosy) return;
+
+        if (_pos.y % 2 == 1 || _pos.y == MaxPosy)
+        {
+            Camera.main.transform.DOMoveY(this.transform.position.y, 1.5f).SetEase(Ease.Linear);
+        }
     }
 
     public void DestroyByHeal()

@@ -88,7 +88,9 @@ public class Map : MonoBehaviour
 
             newBlock.transform.localPosition = new Vector3(startPos + block.Position.x * levelData.Space, -block.Position.y * levelData.Space, 0);
 
-            Game.ListBlock.Add(newBlock.GetComponent<Block>());
+            var blockScript = newBlock.GetComponent<Block>();
+            blockScript.Pos = block.Position;
+            Game.ListBlock.Add(blockScript);
         }
     }
 
