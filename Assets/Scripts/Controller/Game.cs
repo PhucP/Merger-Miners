@@ -19,7 +19,7 @@ public class Game : MonoBehaviour
     public event Action OnInit;
     public event Action OnQuit;
     public event Action OnWin;
-    //public event Action OnLose;
+    public event Action OnLose;
 
     [HideInInspector] public bool IsPlay;
 
@@ -53,6 +53,8 @@ public class Game : MonoBehaviour
         ListBlock.Clear();
         IsPlay = false;
 
+        UIManager.Instance.UpdateCoinText(Data._saveData.Gold);
+
         OnInit?.Invoke();
     }
 
@@ -70,7 +72,7 @@ public class Game : MonoBehaviour
 
     public LevelData GetLevelDataByLevel(int lv)
     {
-        return Data.LevelConfig.ListLevelData[lv - 1];
+        return Data.LevelConfig.ListLevelData[lv % Data.LevelConfig.ListLevelData.Count()];
     }
 
     public GameObject GetGift(int index = 0)
@@ -86,6 +88,7 @@ public class Game : MonoBehaviour
     public void Win()
     {
         OnWin?.Invoke();
+        Reset();
     }
 
     public void Reset()
@@ -119,23 +122,20 @@ public class Game : MonoBehaviour
     public void NextLevel()
     {
         Reset();
-        Data._saveData.Level += 1; 
+        Data._saveData.Level += 1;
         Init();
     }
 
     public void Save(bool isResetData = true)
     {
         var saveData = Data._saveData;
-        saveData.Exp = 0;
-        saveData.Gold = 0;
-
         saveData.listInvData.Clear();
 
-        if(isResetData) return;
-        
-        foreach(Inventory inventory in ListInventory)
+        if (isResetData) return;
+
+        foreach (Inventory inventory in ListInventory)
         {
-            if(inventory.CurrentShovel != null)
+            if (inventory.CurrentShovel != null)
             {
                 InventoryData inventoryData = new InventoryData();
                 inventoryData.Position = inventory.Position;
@@ -155,5 +155,15 @@ public class Game : MonoBehaviour
     public Inventory GetInventoryByPos(Vector2Int pos)
     {
         return ListInventory.FirstOrDefault(inventory => inventory.Position == pos);
+    }
+
+    public void IsLose()
+    {
+        foreach (var weapon in ListShovel)
+        {
+            if(ListShovel.Count <= 1) break;
+            if (weapon != null && weapon.gameObject.activeInHierarchy) return;
+        }
+        OnLose?.Invoke();
     }
 }

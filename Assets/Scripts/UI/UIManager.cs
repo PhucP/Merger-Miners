@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Button _playButton;
     [SerializeField] private Button _buyButton;
-    [SerializeField] private GameObject _winPanel;
+    [SerializeField] private GameObject _winPanel, _losePanel;
+    [SerializeField] private TMP_Text _coinText;
  
     private Game Game => Game.Instance;
 
@@ -28,6 +30,7 @@ public class UIManager : MonoBehaviour
 
         Game.OnInit += OnInitEvent;
         Game.OnWin += OnWinEvent;
+        Game.OnLose += OnLoseEvent;
     }
 
     private void Singleton()
@@ -45,6 +48,7 @@ public class UIManager : MonoBehaviour
         Game.Save(false);
 
         PlayAction?.Invoke();
+        Game.IsLose();
         _playButton.gameObject.SetActive(false);
         _buyButton.gameObject.SetActive(false);
     }
@@ -55,6 +59,7 @@ public class UIManager : MonoBehaviour
         _buyButton.gameObject.SetActive(true);
 
         _winPanel.SetActive(false);
+        _losePanel.SetActive(false);
     }
 
     public void OnWinEvent()
@@ -62,5 +67,13 @@ public class UIManager : MonoBehaviour
         _winPanel.SetActive(true);
     }
 
-    
+    public void OnLoseEvent()
+    {
+        _losePanel.SetActive(true);
+    }
+
+    public void UpdateCoinText(int coin)
+    {
+        _coinText.SetText("COIN: {}", coin);
+    }
 }

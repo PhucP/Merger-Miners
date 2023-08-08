@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd4abc89c13524d4ea04b0609780cf92, type: 3}
   m_Name: SaveData
   m_EditorClassIdentifier: 
-  Level: 2
-  Gold: 0
+  Level: 7
+  Gold: 70
   Exp: 0
   listInvData:
-  - Position: {x: 0, y: 0}
-    Type: 2
-  - Position: {x: 0, y: 0}
+  - Position: {x: 0, y: 2}
+    Type: 3
+  - Position: {x: 1, y: 2}
     Type: 1

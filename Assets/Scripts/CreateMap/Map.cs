@@ -51,7 +51,7 @@ public class Map : MonoBehaviour
             }
         }
 
-        if (saveData.Level != 1 && saveData.listInvData.Count != 0)
+        if (saveData.listInvData.Count != 0)
         {
             var listOldInv = saveData.listInvData;
             CreateOldWeapon(listOldInv);

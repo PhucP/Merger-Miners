@@ -15,10 +15,12 @@ public class Shovel : MonoBehaviour, ICollision
     private Rigidbody rb => GetComponent<Rigidbody>();
     private Vector3 _mousePos;
     private Inventory _currentInventory;
+    private int _cost;
 
     private bool _isPlay;
     [SerializeField] private ShovelType _type;
 
+    public int Cost {get; set;}
     public ShovelType Type
     {
         get => _type;
@@ -52,6 +54,7 @@ public class Shovel : MonoBehaviour, ICollision
         _shovelData = game.GetShovelData(_type);
         _damage = _shovelData.Damage;
         _heal = _shovelData.Heal;
+        _cost = _shovelData.Cost;
     }
 
     public void OnPlayEvent()
@@ -60,7 +63,6 @@ public class Shovel : MonoBehaviour, ICollision
 
         if (rb != null) rb.useGravity = true;
     }
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -95,7 +97,9 @@ public class Shovel : MonoBehaviour, ICollision
 
     public void DestroyByHeal()
     {
-        Destroy(this.gameObject);
+        gameObject.SetActive(false);
+        game.IsLose();
+        //Destroy(this.gameObject);
     }
 
     private void OnMouseDown()
@@ -106,7 +110,8 @@ public class Shovel : MonoBehaviour, ICollision
     }
 
     private void OnMouseDrag()
-    {        //disable mouse when play
+    {
+        //disable mouse when play
         if (_isPlay) return;
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - _mousePos);
     }
@@ -157,7 +162,7 @@ public class Shovel : MonoBehaviour, ICollision
 
     private bool CheckMerge(Inventory inventory)
     {
-        if (inventory.CurrentShovel.Type != this._type)
+        if (inventory.CurrentShovel.Type != this._type || game.Data._saveData.Gold < _cost)
         {
             return false;
         }

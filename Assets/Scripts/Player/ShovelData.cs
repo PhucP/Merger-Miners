@@ -9,6 +9,7 @@ public class ShovelData
     public GameObject Prefab;
     public int Damage;
     public int Heal;
+    public int Cost;
 }
 
 [System.Serializable]
