@@ -5,13 +5,14 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine.Serialization;
 
 public class GridBase : MonoBehaviour
 {
-    public BlockType Type;
-    public Vector2Int Position;
+    [FormerlySerializedAs("Type")] public BlockType type;
+    [FormerlySerializedAs("Position")] public Vector2Int position;
 
-    private CreateMap create => CreateMap.Instance;
+    private CreateMap Create => CreateMap.Instance;
 
     private void OnMouseDown()
     {
@@ -20,30 +21,30 @@ public class GridBase : MonoBehaviour
 
     public void ChangeTypeOfGrid()
     {
-        Type = GetNextBlockType();
+        type = GetNextBlockType();
         GameObject blockPrefab = GetBlockPrefabByType();
 
-        GameObject oldGO = this.gameObject;
-        oldGO.SetActive(false);
-        create._listGrid.Remove(this);
+        GameObject oldGo = this.gameObject;
+        oldGo.SetActive(false);
+        Create.listGrid.Remove(this);
 
-        GameObject newGO = Instantiate(blockPrefab, this.transform.position, Quaternion.identity, create._parentGrid);
-        newGO.GetComponent<GridBase>().Position = Position;
-        create._listGrid.Add(newGO.GetComponent<GridBase>());
+        GameObject newGo = Instantiate(blockPrefab, this.transform.position, Quaternion.identity, Create.parentGrid);
+        newGo.GetComponent<GridBase>().position = position;
+        Create.listGrid.Add(newGo.GetComponent<GridBase>());
 
-        Destroy(oldGO);
+        Destroy(oldGo);
     }
 
     private BlockType GetNextBlockType()
     {
         BlockType maxType = System.Enum.GetValues(typeof(BlockType)).Cast<BlockType>().Max();
         int numOfType = (int)maxType + 1;
-        return (BlockType)(((int)Type + 1) % numOfType);
+        return (BlockType)(((int)type + 1) % numOfType);
     }
 
     public GameObject GetBlockPrefabByType()
     {
-        var grid = create.ListGridPrefab.FirstOrDefault(grid => grid.GetComponent<GridBase>().Type == Type);
+        var grid = Create.listGridPrefab.FirstOrDefault(grid => grid.GetComponent<GridBase>().type == type);
         return grid;
     }
 
@@ -62,6 +63,6 @@ public class GridBase : MonoBehaviour
 [System.Serializable]
 public class GridData
 {
-    public BlockType Type;
-    public Vector2Int Position;
+    [FormerlySerializedAs("Type")] public BlockType type;
+    [FormerlySerializedAs("Position")] public Vector2Int position;
 }

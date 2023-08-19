@@ -4,31 +4,33 @@ using UnityEngine;
 using System.Linq;
 using System;
 using DG.Tweening;
+using UnityEditor;
+
 public class Game : MonoBehaviour
 {
     public static Game Instance;
 
-    public GameData Data;
+    public GameData data;
     public Transform weaponParent;
-
-    [Header("Object")]
-    public List<Inventory> ListInventory;
-    public List<Shovel> ListShovel;
-    public List<Gift> ListGift;
-    public List<Block> ListBlock;
+    public List<Inventory> listInventory;
+    public List<Shovel> listShovel;
+    public List<Gift> listGift;
+    public List<Block> listBlock;
+    public List<Block> listHistBlock;
 
     public event Action OnInit;
     public event Action OnQuit;
     public event Action OnWin;
     public event Action OnLose;
 
-    [HideInInspector] public bool IsPlay;
+    public bool isWin;
+    public bool isPlay;
 
     private void Awake()
     {
         Singleton();
 
-        ListInventory = new List<Inventory>();
+        listInventory = new List<Inventory>();
     }
 
     private void Singleton()
@@ -48,13 +50,15 @@ public class Game : MonoBehaviour
 
     public void Init()
     {
-        ListGift.Clear();
-        ListInventory.Clear();
-        ListShovel.Clear();
-        ListBlock.Clear();
-        IsPlay = false;
+        listGift.Clear();
+        listInventory.Clear();
+        listShovel.Clear();
+        listBlock.Clear();
+        isPlay = false;
+        isWin = false;
+        listHistBlock.Clear();
 
-        UIManager.Instance.UpdateCoinText(Data._saveData.Gold);
+        UIManager.Instance.UpdateCoinText(data.saveData.gold);
         Camera.main.transform.position = new Vector3(0, 0, -10);
 
         OnInit?.Invoke();
@@ -62,24 +66,24 @@ public class Game : MonoBehaviour
 
     public ShovelData GetShovelData(ShovelType shovelType)
     {
-        var shovelData = Data.ListShoveConfig.FirstOrDefault(shovelData => shovelData.Type == shovelType);
+        var shovelData = data.listShoveConfig.FirstOrDefault(shovelData => shovelData.type == shovelType);
         return shovelData;
     }
 
     public BlockData GetBlockData(BlockType blockType)
     {
-        var blockData = Data.ListBlockConfig.FirstOrDefault(blockData => blockData.Type == blockType);
+        var blockData = data.listBlockConfig.FirstOrDefault(blockData => blockData.type == blockType);
         return blockData;
     }
 
     public LevelData GetLevelDataByLevel(int lv)
     {
-        return Data.LevelConfig.ListLevelData[lv % Data.LevelConfig.ListLevelData.Count()];
+        return data.levelConfig.listLevelData[lv % data.levelConfig.listLevelData.Count()];
     }
 
     public GameObject GetGift(int index = 0)
     {
-        return Data.ListGiftPrefab[index];
+        return data.listGiftPrefab[index];
     }
 
     private void OnApplicationQuit()
@@ -87,18 +91,20 @@ public class Game : MonoBehaviour
         OnQuit?.Invoke();
     }
 
-    public void Win()
+    public IEnumerator Win()
     {
+        yield return new WaitForSeconds(2f);
         OnWin?.Invoke();
-        Reset();
+        //Reset();
     }
 
     public void Reset()
     {
-        RemoveOldObject(ListInventory);
-        RemoveOldObject(ListShovel);
-        RemoveOldObject(ListGift);
-        RemoveOldObject(ListBlock);
+        RemoveOldObject(listInventory);
+        RemoveOldObject(listShovel);
+        RemoveOldObject(listGift);
+        RemoveOldObject(listBlock);
+        RemoveOldObject(listHistBlock);
 
         DOTween.KillAll();
     }
@@ -121,53 +127,69 @@ public class Game : MonoBehaviour
     {
         Reset();
         Init();
+        UIManager.Instance.Continue();
     }
 
     public void NextLevel()
     {
         Reset();
-        Data._saveData.Level += 1;
+        data.saveData.level += 1;
         Init();
     }
 
     public void Save(bool isResetData = true)
     {
-        var saveData = Data._saveData;
+        var saveData = data.saveData;
         saveData.listInvData.Clear();
 
         if (isResetData) return;
 
-        foreach (Inventory inventory in ListInventory)
+        foreach (Inventory inventory in listInventory)
         {
             if (inventory.CurrentShovel != null)
             {
                 InventoryData inventoryData = new InventoryData();
-                inventoryData.Position = inventory.Position;
-                inventoryData.Type = inventory.CurrentShovel.Type;
+                inventoryData.position = inventory.position;
+                inventoryData.type = inventory.CurrentShovel.Type;
 
                 saveData.listInvData.Add(inventoryData);
             }
         }
+        EditorUtility.SetDirty(saveData);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
     }
 
     public void ResetInven()
     {
-        Data._saveData.listInvData.Clear();
+        data.saveData.listInvData.Clear();
         RePlay();
     }
 
     public Inventory GetInventoryByPos(Vector2Int pos)
     {
-        return ListInventory.FirstOrDefault(inventory => inventory.Position == pos);
+        return listInventory.FirstOrDefault(inventory => inventory.position == pos);
     }
 
-    public void IsLose()
+    public void CheckGameStat()
     {
-        foreach (var weapon in ListShovel)
+        foreach (var weapon in listShovel)
         {
-            if(ListShovel.Count <= 1) break;
+            if (listShovel.Count < 1)
+            {
+                StartCoroutine(Lose());
+                return;
+            }
             if (weapon != null && weapon.gameObject.activeInHierarchy) return;
         }
+
+        if (isWin) StartCoroutine(Win());
+        else StartCoroutine(Lose());
+    }
+
+    public IEnumerator Lose()
+    {
+        yield return new WaitForSeconds(2f);
         OnLose?.Invoke();
     }
 }

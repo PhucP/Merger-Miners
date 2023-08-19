@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace ETFXPEL
@@ -11,21 +12,21 @@ public class UICanvasManager : MonoBehaviour {
 		GlobalAccess = this;
 	}
 
-	public bool MouseOverButton = false;
-	public Text PENameText;
-	public Text ToolTipText;
+	[FormerlySerializedAs("MouseOverButton")] public bool mouseOverButton = false;
+	[FormerlySerializedAs("PENameText")] public Text peNameText;
+	[FormerlySerializedAs("ToolTipText")] public Text toolTipText;
 
 	// Use this for initialization
 	void Start () {
-		if (PENameText != null)
-			PENameText.text = ParticleEffectsLibrary.GlobalAccess.GetCurrentPENameString();
+		if (peNameText != null)
+			peNameText.text = ParticleEffectsLibrary.GlobalAccess.GetCurrentPeNameString();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 		// Mouse Click - Check if mouse over button to prevent spawning particle effects while hovering or using UI buttons.
-		if (!MouseOverButton) {
+		if (!mouseOverButton) {
 			// Left Button Click
 			if (Input.GetMouseButtonUp (0)) {
 				// Spawn Currently Selected Particle System
@@ -34,48 +35,48 @@ public class UICanvasManager : MonoBehaviour {
 		}
 
 		if (Input.GetKeyUp (KeyCode.A)) {
-			SelectPreviousPE ();
+			SelectPreviousPe ();
 		}
 		if (Input.GetKeyUp (KeyCode.D)) {
-			SelectNextPE ();
+			SelectNextPe ();
 		}
 	}
 
 	public void UpdateToolTip(ButtonTypes toolTipType) {
-		if (ToolTipText != null) {
+		if (toolTipText != null) {
 			if (toolTipType == ButtonTypes.Previous) {
-				ToolTipText.text = "Select Previous Particle Effect";
+				toolTipText.text = "Select Previous Particle Effect";
 			}
 			else if (toolTipType == ButtonTypes.Next) {
-				ToolTipText.text = "Select Next Particle Effect";
+				toolTipText.text = "Select Next Particle Effect";
 			}
 		}
 	}
 	public void ClearToolTip() {
-		if (ToolTipText != null) {
-			ToolTipText.text = "";
+		if (toolTipText != null) {
+			toolTipText.text = "";
 		}
 	}
 
-	private void SelectPreviousPE() {
+	private void SelectPreviousPe() {
 		// Previous
 		ParticleEffectsLibrary.GlobalAccess.PreviousParticleEffect();
-		if (PENameText != null)
-			PENameText.text = ParticleEffectsLibrary.GlobalAccess.GetCurrentPENameString();
+		if (peNameText != null)
+			peNameText.text = ParticleEffectsLibrary.GlobalAccess.GetCurrentPeNameString();
 	}
-	private void SelectNextPE() {
+	private void SelectNextPe() {
 		// Next
 		ParticleEffectsLibrary.GlobalAccess.NextParticleEffect();
-		if (PENameText != null)
-			PENameText.text = ParticleEffectsLibrary.GlobalAccess.GetCurrentPENameString();
+		if (peNameText != null)
+			peNameText.text = ParticleEffectsLibrary.GlobalAccess.GetCurrentPeNameString();
 	}
 
-	private RaycastHit rayHit;
+	private RaycastHit _rayHit;
 	private void SpawnCurrentParticleEffect() {
 		// Spawn Particle Effect
 		Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-		if (Physics.Raycast (mouseRay, out rayHit)) {
-			ParticleEffectsLibrary.GlobalAccess.SpawnParticleEffect (rayHit.point);
+		if (Physics.Raycast (mouseRay, out _rayHit)) {
+			ParticleEffectsLibrary.GlobalAccess.SpawnParticleEffect (_rayHit.point);
 		}
 	}
 
@@ -87,11 +88,11 @@ public class UICanvasManager : MonoBehaviour {
 		switch (buttonTypeClicked) {
 		case ButtonTypes.Previous:
 			// Select Previous Prefab
-			SelectPreviousPE();
+			SelectPreviousPe();
 			break;
 		case ButtonTypes.Next:
 			// Select Next Prefab
-			SelectNextPE();
+			SelectNextPe();
 			break;
 		default:
 			// Nothing

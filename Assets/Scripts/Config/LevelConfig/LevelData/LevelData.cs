@@ -1,19 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "LevelData", menuName = "Merge MIner/LevelData", order = 0)]
 public class LevelData : ScriptableObject
 {
-    [Header("Size")]
-    public int Width;
-    public int GridHeight, InventoryHeight;
-    public float Space;
+    [FormerlySerializedAs("Width")] [Header("Size")]
+    public int width;
+    [FormerlySerializedAs("GridHeight")] public int gridHeight;
+    [FormerlySerializedAs("InventoryHeight")] public int inventoryHeight;
+    [FormerlySerializedAs("Space")] public float space;
 
-    [Header("Gird")]
-    public List<GridData> ListGrid;
+    [FormerlySerializedAs("ListGrid")] [Header("Gird")]
+    public List<GridData> listGrid;
 
-    [Header("Tranform")]
-    public float AnchorsPosY, FieldOfView;
-    public float InvPosY, BlockPosY;
+    [FormerlySerializedAs("AnchorsPosY")] [Header("Tranform")]
+    public float anchorsPosY;
+
+    [FormerlySerializedAs("FieldOfView")] [Header("Tranform")]
+    public float fieldOfView;
+
+    [FormerlySerializedAs("InvPosY")] public float invPosY;
+    [FormerlySerializedAs("BlockPosY")] public float blockPosY;
 }

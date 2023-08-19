@@ -4,18 +4,25 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
+using UnityEngine.Serialization;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
     public event Action PlayAction;
-    public GameObject WinPanel;
 
-    [SerializeField] private Button _playButton;
-    [SerializeField] private Button _buyButton;
-    [SerializeField] private GameObject _winPanel, _losePanel;
-    [SerializeField] private TMP_Text _coinText;
- 
+    [SerializeField] private Button next;
+    [SerializeField] private Button replay;
+    [SerializeField] private Button replayLose;
+    [SerializeField] private Button option;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject losePanel;
+    [SerializeField] private GameObject playGroup;
+    [SerializeField] private GameObject pause;
+    [SerializeField] private TMP_Text coinText;
+    [SerializeField] private TMP_Text level;
+
     private Game Game => Game.Instance;
 
 
@@ -26,7 +33,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        WinPanel.SetActive(false);
+        winPanel.SetActive(false);
 
         Game.OnInit += OnInitEvent;
         Game.OnWin += OnWinEvent;
@@ -48,32 +55,67 @@ public class UIManager : MonoBehaviour
         Game.Save(false);
 
         PlayAction?.Invoke();
-        Game.IsLose();
-        _playButton.gameObject.SetActive(false);
-        _buyButton.gameObject.SetActive(false);
+        Game.CheckGameStat();
+        playGroup.SetActive(false);
     }
 
     public void OnInitEvent()
     {
-        _playButton.gameObject.SetActive(true);
-        _buyButton.gameObject.SetActive(true);
+        playGroup.SetActive(true);
 
-        _winPanel.SetActive(false);
-        _losePanel.SetActive(false);
+        var image = losePanel.GetComponent<Image>();
+        image.DOFade(0, 0f);
+        var image2 = winPanel.GetComponent<Image>();
+        image2.DOFade(0, 0f);
+
+        replayLose.transform.localScale = Vector3.zero;
+        replay.transform.localScale = Vector3.zero;
+        next.transform.localScale = Vector3.zero;
+
+        pause.SetActive(false);
+        winPanel.SetActive(false);
+        losePanel.SetActive(false);
+
+        SetLevel();
     }
 
-    public void OnWinEvent()
+    private void OnWinEvent()
     {
-        _winPanel.SetActive(true);
+        var image = winPanel.GetComponent<Image>();
+        winPanel.SetActive(true);
+        image.DOFade(1, 2f).SetEase(Ease.Linear);
+
+        replay.transform.DOScale(1, 2.5f).SetEase(Ease.OutBounce);
+        next.transform.DOScale(1, 2.5f).SetEase(Ease.OutBounce);
     }
 
-    public void OnLoseEvent()
+    private void OnLoseEvent()
     {
-        _losePanel.SetActive(true);
+        var image = losePanel.GetComponent<Image>();
+        losePanel.SetActive(true);
+        image.DOFade(1, 2f).SetEase(Ease.Linear);
+        replayLose.transform.DOScale(1, 2.5f).SetEase(Ease.OutBounce);
     }
 
     public void UpdateCoinText(int coin)
     {
-        _coinText.SetText("COIN: {}", coin);
+        coinText.SetText("{}", coin);
+    }
+
+    private void SetLevel()
+    {
+        level.SetText("LEVEL {}", Game.Instance.data.saveData.level);
+    }
+
+    public void Option()
+    {
+        pause.SetActive(!pause.activeSelf);
+        Time.timeScale = 0;
+    }
+
+    public void Continue()
+    {
+        pause.SetActive(false);
+        Time.timeScale = 1;
     }
 }

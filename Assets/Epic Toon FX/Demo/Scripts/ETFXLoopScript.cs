@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace EpicToonFX
 {
-	public class ETFXLoopScript : MonoBehaviour
+	public class EtfxLoopScript : MonoBehaviour
 	{
 		public GameObject chosenEffect;
 		public float loopTimeLimit = 2.0f;

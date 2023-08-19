@@ -4,28 +4,30 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Linq;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
 public class Shovel : MonoBehaviour, ICollision
 {
-    private Game game => Game.Instance;
-    private UIManager ui => UIManager.Instance;
+    private Game Game => Game.Instance;
+    private UIManager UI => UIManager.Instance;
 
     private ShovelData _shovelData;
     private int _heal;
     private int _damage;
-    private Rigidbody rb => GetComponent<Rigidbody>();
+    private Rigidbody Rb => GetComponent<Rigidbody>();
     private Vector3 _mousePos;
     private Inventory _currentInventory;
     private int _cost;
+    private Block _histBlock;
 
     private bool _isPlay;
-    [SerializeField] private ShovelType _type;
+    [FormerlySerializedAs("_type")] [SerializeField] private ShovelType type;
 
     public int Cost { get; set; }
     public ShovelType Type
     {
-        get => _type;
-        set => _type = value;
+        get => type;
+        set => type = value;
     }
     public Inventory CurrentInventory
     {
@@ -35,13 +37,13 @@ public class Shovel : MonoBehaviour, ICollision
 
     private void Awake()
     {
-        ui.PlayAction += OnPlayEvent;
+        UI.PlayAction += OnPlayEvent;
     }
 
     private void OnDisable()
     {
         //unsubcribe for play action
-        ui.PlayAction -= OnPlayEvent;
+        UI.PlayAction -= OnPlayEvent;
     }
 
     private void Start()
@@ -51,33 +53,60 @@ public class Shovel : MonoBehaviour, ICollision
 
     private void Init()
     {
-        _isPlay = game.IsPlay;
-        _shovelData = game.GetShovelData(_type);
-        _damage = _shovelData.Damage;
-        _heal = _shovelData.Heal;
-        _cost = _shovelData.Cost;
+        _isPlay = Game.isPlay;
+        _shovelData = Game.GetShovelData(type);
+        _damage = _shovelData.damage;
+        _heal = _shovelData.heal;
+        _cost = _shovelData.cost;
+        _histBlock = null;
     }
 
     public void OnPlayEvent()
     {
         _isPlay = true;
 
-        if (rb != null) rb.useGravity = true;
+        if (Rb != null) Rb.useGravity = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         var block = other.gameObject.GetComponent<Block>();
+        _histBlock = block;
         if (block != null && _isPlay)
         {
-            if (_damage < block.Heal) rb.velocity = Vector3.up * 10f;
+            //Move Camera
+            MoveCamera(_histBlock);
+
+            if (_damage < block.Heal) Rb.velocity = Vector3.up * 10f;
             TakeDamage(block.Damage);
             block.TakeDamage(_damage);
 
-            var hitVFX = Instantiate(game.Data.listVFX[0], block.transform.position, Quaternion.identity);
+            var hitVFX = Instantiate(Game.data.listVFX[0], block.transform.position, Quaternion.identity);
             Destroy(hitVFX, 2f);
-
         }
+    }
+
+    private void MoveCamera(Block block)
+    {
+        int maxPosy = Game.GetLevelDataByLevel(Game.data.saveData.level).gridHeight - 3;
+
+        if (block.Pos.y > maxPosy) return;
+
+        if (!Game.listHistBlock.Contains(block))
+        {
+            Game.listHistBlock.Add(block);
+        }
+
+        float deepest = float.MaxValue;
+        foreach (var i in Game.listHistBlock)
+        {
+            if (i != null && i.transform.localPosition.y < deepest)
+            {
+                deepest = i.transform.localPosition.y;
+            }
+        }
+
+        Camera.main.transform.DOMoveY(deepest, 1.5f).SetEase(Ease.Linear);
     }
 
     private void Update()
@@ -91,6 +120,7 @@ public class Shovel : MonoBehaviour, ICollision
 
         if (_heal < 1)
         {
+            Game.listHistBlock.Remove(_histBlock);
             DestroyByHeal();
         }
     }
@@ -98,7 +128,8 @@ public class Shovel : MonoBehaviour, ICollision
     public void DestroyByHeal()
     {
         gameObject.SetActive(false);
-        game.IsLose();
+        Game.CheckGameStat();
+
         //Destroy(this.gameObject);
     }
 
@@ -162,13 +193,13 @@ public class Shovel : MonoBehaviour, ICollision
 
     private bool CheckMerge(Inventory inventory)
     {
-        if (inventory.CurrentShovel.Type != this._type || game.Data._saveData.Gold < _cost)
+        if (inventory.CurrentShovel.Type != this.type || Game.data.saveData.gold < _cost)
         {
             return false;
         }
 
         ShovelType maxType = System.Enum.GetValues(typeof(ShovelType)).Cast<ShovelType>().Max();
-        if (_type == maxType) return false;
+        if (type == maxType) return false;
         return true;
     }
 
@@ -184,7 +215,7 @@ public class Shovel : MonoBehaviour, ICollision
 
     public void LevelUpForShavel()
     {
-        _type = (ShovelType)(int)_type + 1;
+        type = (ShovelType)(int)type + 1;
     }
 }
 

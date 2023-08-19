@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class BlockData
 {
-    public GameObject BlockPrefab;
-    public int Heal;
-    public BlockType Type;
-    public int Damage;
+    [FormerlySerializedAs("BlockPrefab")] public GameObject blockPrefab;
+    [FormerlySerializedAs("Heal")] public int heal;
+    [FormerlySerializedAs("Type")] public BlockType type;
+    [FormerlySerializedAs("Damage")] public int damage;
 }

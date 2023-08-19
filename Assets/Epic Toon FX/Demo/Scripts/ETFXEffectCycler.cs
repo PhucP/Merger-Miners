@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace EpicToonFX
 {
-	public class ETFXEffectCycler : MonoBehaviour
+	public class EtfxEffectCycler : MonoBehaviour
 	{
 		public List<GameObject> listOfEffects;
-		int effectIndex = 0;
+		int _effectIndex = 0;
 	
 		[Header("Spawn Settings")]
 		
@@ -29,20 +29,20 @@ namespace EpicToonFX
 		{
 			StartCoroutine("EffectLoop");
 			
-			if (effectIndex < listOfEffects.Count - 1)
+			if (_effectIndex < listOfEffects.Count - 1)
 			{
-                effectIndex++;
+                _effectIndex++;
 			}
 				
             else
 			{
-                effectIndex = 0;
+                _effectIndex = 0;
 			}
 		}
 
 		private IEnumerator EffectLoop()
 		{
-            GameObject instantiatedEffect = (GameObject) Instantiate(listOfEffects[effectIndex], transform.position, transform.rotation * Quaternion.Euler (0, 0, 0));
+            GameObject instantiatedEffect = (GameObject) Instantiate(listOfEffects[_effectIndex], transform.position, transform.rotation * Quaternion.Euler (0, 0, 0));
 			
 			if (disableLights && instantiatedEffect.GetComponent<Light>())
 			{

@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Map : MonoBehaviour
 {
-    [SerializeField] private Transform _blockParent;
-    [SerializeField] private Transform _inventoryParent;
-    [SerializeField] private Transform _giftParent;
+    [FormerlySerializedAs("_blockParent")] [SerializeField] private Transform blockParent;
+    [FormerlySerializedAs("_inventoryParent")] [SerializeField] private Transform inventoryParent;
+    [FormerlySerializedAs("_giftParent")] [SerializeField] private Transform giftParent;
 
 
     private Game Game => Game.Instance;
@@ -22,32 +23,34 @@ public class Map : MonoBehaviour
 
     public void SpawnMap()
     {
-        var saveData = Game.Data._saveData;
-        var levelData = Game.GetLevelDataByLevel(saveData.Level);
-        var startPos = CalucalteStartPos(levelData.Width, levelData.Space);
+        var saveData = Game.data.saveData;
+        var levelData = Game.GetLevelDataByLevel(saveData.level);
+        var startPos = CalucalteStartPos(levelData.width, levelData.space);
 
         //set pos for inv and grid parent
-        _inventoryParent.position = new Vector3(_inventoryParent.position.x, levelData.InvPosY, _inventoryParent.position.z);
-        _blockParent.position = new Vector3(_blockParent.position.x, _inventoryParent.position.y - (levelData.InventoryHeight + 1) * levelData.Space, _blockParent.position.z);
-        _giftParent.position = new Vector3(_giftParent.position.x, _blockParent.position.y - (levelData.GridHeight + 1) * levelData.Space, _giftParent.position.z);
+        inventoryParent.position = new Vector3(inventoryParent.position.x, levelData.invPosY, inventoryParent.position.z);
+        blockParent.position = new Vector3(blockParent.position.x, inventoryParent.position.y - (levelData.inventoryHeight + 1) * levelData.space, blockParent.position.z);
+        giftParent.position = new Vector3(giftParent.position.x, blockParent.position.y - (levelData.gridHeight + 1) * levelData.space, giftParent.position.z);
 
         SpawnInventory(levelData, startPos, saveData);
         SpawnGrid(startPos, levelData);
         SpawnGift(startPos, levelData);
+
+        Camera.main.fieldOfView = levelData.fieldOfView;
     }
 
     public void SpawnInventory(LevelData levelData, float startPos, SaveData saveData)
     {
-        for (int i = 0; i < levelData.InventoryHeight; i++)
+        for (int i = 0; i < levelData.inventoryHeight; i++)
         {
-            for (int j = 0; j < levelData.Width; j++)
+            for (int j = 0; j < levelData.width; j++)
             {
-                GameObject newInv = Instantiate(Game.Data.ListInventoryPrefab[0], Vector3.zero, Quaternion.identity, _inventoryParent);
-                newInv.transform.localPosition = new Vector3(startPos + j * levelData.Space, -i * levelData.Space, 0);
+                GameObject newInv = Instantiate(Game.data.listInventoryPrefab[0], Vector3.zero, Quaternion.identity, inventoryParent);
+                newInv.transform.localPosition = new Vector3(startPos + j * levelData.space, -i * levelData.space, 0);
 
                 Inventory newInvScript = newInv.GetComponent<Inventory>();
-                newInvScript.Position = new Vector2Int(i, j);
-                Game.ListInventory.Add(newInvScript);
+                newInvScript.position = new Vector2Int(i, j);
+                Game.listInventory.Add(newInvScript);
             }
         }
 
@@ -62,18 +65,18 @@ public class Map : MonoBehaviour
     {
         foreach (var inventory in listOldInv)
         {
-            Inventory currentInv = Game.GetInventoryByPos(inventory.Position);
+            Inventory currentInv = Game.GetInventoryByPos(inventory.position);
             if (currentInv != null)
             {
-                currentInv.CreateNewShovel(inventory.Type, true);
+                currentInv.CreateNewShovel(inventory.type, true);
             }
             else
             {
-                List<Inventory> emptyInv = Game.ListInventory.FindAll(inv => inv.CurrentShovel == null);
+                List<Inventory> emptyInv = Game.listInventory.FindAll(inv => inv.CurrentShovel == null);
                 if (emptyInv.Count != 0)
                 {
                     int ranIndex = (int)Random.Range(0, emptyInv.Count);
-                    emptyInv[ranIndex].CreateNewShovel(inventory.Type, true);
+                    emptyInv[ranIndex].CreateNewShovel(inventory.type, true);
                 }
             }
         }
@@ -81,36 +84,36 @@ public class Map : MonoBehaviour
 
     public void SpawnGrid(float startPos, LevelData levelData)
     {
-        foreach (var block in levelData.ListGrid)
+        foreach (var block in levelData.listGrid)
         {
-            BlockData findBlock = Game.GetBlockData(block.Type);
-            GameObject newBlock = Instantiate(findBlock.BlockPrefab, Vector3.zero, Quaternion.identity, _blockParent);
+            BlockData findBlock = Game.GetBlockData(block.type);
+            GameObject newBlock = Instantiate(findBlock.blockPrefab, Vector3.zero, Quaternion.identity, blockParent);
 
-            newBlock.transform.localPosition = new Vector3(startPos + block.Position.x * levelData.Space, -block.Position.y * levelData.Space, 0);
+            newBlock.transform.localPosition = new Vector3(startPos + block.position.x * levelData.space, -block.position.y * levelData.space, 0);
 
             var blockScript = newBlock.GetComponent<Block>();
-            blockScript.Pos = block.Position;
-            Game.ListBlock.Add(blockScript);
+            blockScript.Pos = block.position;
+            Game.listBlock.Add(blockScript);
         }
     }
 
     public void SpawnGift(float startPos, LevelData levelData)
     {
-        for (int i = 0; i < levelData.Width; i++)
+        for (int i = 0; i < levelData.width; i++)
         {
             GameObject giftPrefab = Game.GetGift();
-            GameObject newGift = Instantiate(giftPrefab, Vector3.zero, Quaternion.identity, _giftParent);
+            GameObject newGift = Instantiate(giftPrefab, Vector3.zero, Quaternion.identity, giftParent);
 
-            newGift.transform.localPosition = new Vector3(startPos + i * levelData.Space - 0.175f, newGift.transform.position.y, 0);
+            newGift.transform.localPosition = new Vector3(startPos + i * levelData.space - 0.175f, newGift.transform.position.y, 0);
 
-            Game.ListGift.Add(newGift.GetComponent<Gift>());
+            Game.listGift.Add(newGift.GetComponent<Gift>());
         }
     }
 
-    private float CalucalteStartPos(int _width, float Space)
+    private float CalucalteStartPos(int width, float space)
     {
         float startX = 0;
-        startX = (_width % 2 != 0) ? -_width / 2 * Space : -(_width / 2 - 0.5f) * Space;
+        startX = (width % 2 != 0) ? -width / 2 * space : -(width / 2 - 0.5f) * space;
         return startX;
     }
 

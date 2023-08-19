@@ -4,7 +4,7 @@ using System.Collections;
 namespace EpicToonFX
 {
 
-    public class ETFXMouseOrbit : MonoBehaviour
+    public class EtfxMouseOrbit : MonoBehaviour
     {
         public Transform target;
         public float distance = 12.0f;
@@ -15,22 +15,22 @@ namespace EpicToonFX
         public float distanceMin = 8f;
         public float distanceMax = 15f;
         public float smoothTime = 2f;
-        private float rotationYAxis = 0.0f;
-        private float rotationXAxis = 0.0f;
-        private float velocityX = 0.0f;
-        private float maxVelocityX = 0.1f;
-        private float velocityY = 0.0f;
-        private readonly float autoRotationSmoothing = 0.02f;
+        private float _rotationYAxis = 0.0f;
+        private float _rotationXAxis = 0.0f;
+        private float _velocityX = 0.0f;
+        private float _maxVelocityX = 0.1f;
+        private float _velocityY = 0.0f;
+        private readonly float _autoRotationSmoothing = 0.02f;
 
         [HideInInspector] public bool isAutoRotating = false;
-        [HideInInspector] public ETFXEffectController etfxEffectController;
-        [HideInInspector] public ETFXEffectControllerPooled etfxEffectControllerPooled;
+        [HideInInspector] public EtfxEffectController etfxEffectController;
+        [HideInInspector] public EtfxEffectControllerPooled etfxEffectControllerPooled;
 
         private void Start()
         {
             Vector3 angles = transform.eulerAngles;
-            rotationYAxis = angles.y;
-            rotationXAxis = angles.x;
+            _rotationYAxis = angles.y;
+            _rotationXAxis = angles.x;
 
             // Make the rigid body not change rotation
             if (GetComponent<Rigidbody>())
@@ -45,8 +45,8 @@ namespace EpicToonFX
             {
                 if (Input.GetMouseButton(1))
                 {
-                    velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
-                    velocityY += ySpeed * Input.GetAxis("Mouse Y") * 0.02f;
+                    _velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
+                    _velocityY += ySpeed * Input.GetAxis("Mouse Y") * 0.02f;
 
                     if (isAutoRotating)
                     {
@@ -62,10 +62,10 @@ namespace EpicToonFX
         {
             if (target)
             {
-                rotationYAxis += velocityX;
-                rotationXAxis -= velocityY;
-                rotationXAxis = ClampAngle(rotationXAxis, yMinLimit, yMaxLimit);
-                Quaternion toRotation = Quaternion.Euler(rotationXAxis, rotationYAxis, 0);
+                _rotationYAxis += _velocityX;
+                _rotationXAxis -= _velocityY;
+                _rotationXAxis = ClampAngle(_rotationXAxis, yMinLimit, yMaxLimit);
+                Quaternion toRotation = Quaternion.Euler(_rotationXAxis, _rotationYAxis, 0);
                 Quaternion rotation = toRotation;
                 
                 if (Physics.Linecast(target.position, transform.position, out RaycastHit hit))
@@ -78,8 +78,8 @@ namespace EpicToonFX
 
                 transform.rotation = rotation;
                 transform.position = position;
-                velocityX = Mathf.Lerp(velocityX, 0, Time.deltaTime * smoothTime);
-                velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
+                _velocityX = Mathf.Lerp(_velocityX, 0, Time.deltaTime * smoothTime);
+                _velocityY = Mathf.Lerp(_velocityY, 0, Time.deltaTime * smoothTime);
             }
         }
 
@@ -101,7 +101,7 @@ namespace EpicToonFX
 
         public void SetAutoRotationSpeed(float rotationSpeed)
         {
-            maxVelocityX = rotationSpeed;
+            _maxVelocityX = rotationSpeed;
         }
 
         private void StopAutoRotation()
@@ -122,14 +122,14 @@ namespace EpicToonFX
 
             while (lerpSteps < 30)
             {
-                velocityX = Mathf.Lerp(velocityX, maxVelocityX, autoRotationSmoothing);
+                _velocityX = Mathf.Lerp(_velocityX, _maxVelocityX, _autoRotationSmoothing);
 
                 yield return new WaitForFixedUpdate();
             }
 
             while (isAutoRotating)
             {
-                velocityX = maxVelocityX;
+                _velocityX = _maxVelocityX;
 
                 yield return new WaitForFixedUpdate();
             }

@@ -2,27 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CreateMap : MonoBehaviour
 {
-    public int _level;
+    [FormerlySerializedAs("_level")] public int level;
 
+    [FormerlySerializedAs("_width")]
     [Header("Size")]
-    [SerializeField] private int _width;
-    [SerializeField] private int _heightGrid;
-    [SerializeField] private int _heightInv;
-    [SerializeField] private float Space;
+    [SerializeField] private int width;
+    [FormerlySerializedAs("_heightGrid")] [SerializeField] private int heightGrid;
+    [FormerlySerializedAs("_heightInv")] [SerializeField] private int heightInv;
+    [FormerlySerializedAs("Space")] [SerializeField] private float space;
 
+    [FormerlySerializedAs("_inventoryPrefab")]
     [Header("Prefab")]
-    [SerializeField] private GameObject _inventoryPrefab;
-    public List<GameObject> ListGridPrefab;
+    [SerializeField] private GameObject inventoryPrefab;
+    [FormerlySerializedAs("ListGridPrefab")] public List<GameObject> listGridPrefab;
 
-    [Header("Parent Transform")]
-    public Transform _parentGrid;
-    public Transform _parentInv;
+    [FormerlySerializedAs("_parentGrid")] [Header("Parent Transform")]
+    public Transform parentGrid;
+    [FormerlySerializedAs("_parentInv")] public Transform parentInv;
 
-    public List<GameObject> _listInventory = new List<GameObject>();
-    public List<GridBase> _listGrid = new List<GridBase>();
+    [FormerlySerializedAs("_listInventory")] public List<GameObject> listInventory = new List<GameObject>();
+    [FormerlySerializedAs("_listGrid")] public List<GridBase> listGrid = new List<GridBase>();
 
     public static CreateMap Instance;
 
@@ -48,19 +51,19 @@ public class CreateMap : MonoBehaviour
 
     public void Reset()
     {
-        foreach (var grid in _listGrid)
+        foreach (var grid in listGrid)
         {
             grid.gameObject.SetActive(false);
             Destroy(grid.gameObject);
         }
 
-        foreach (var inventory in _listInventory)
+        foreach (var inventory in listInventory)
         {
             Destroy(inventory);
         }
 
-        _listGrid.Clear();
-        _listInventory.Clear();
+        listGrid.Clear();
+        listInventory.Clear();
     }
 
 #if UNITY_EDITOR
@@ -68,25 +71,26 @@ public class CreateMap : MonoBehaviour
     {
 
         LevelData levelData = ScriptableObject.CreateInstance<LevelData>();
-        string path = "Assets/Scripts/Config/LevelConfig/LevelData/LevelData_" + _level + ".asset";
+        string path = "Assets/Scripts/Config/LevelConfig/LevelData/LevelData_" + level + ".asset";
 
         List<GridData> gridDatas = new List<GridData>();
-        foreach (var grid in _listGrid)
+        foreach (var grid in listGrid)
         {
             GridData newGrid = new GridData();
-            newGrid.Type = grid.Type;
-            newGrid.Position = grid.Position;
+            newGrid.type = grid.type;
+            newGrid.position = grid.position;
 
             gridDatas.Add(newGrid);
         }
 
-        levelData.Width = _width;
-        levelData.GridHeight = _heightGrid;
-        levelData.InventoryHeight = _heightInv;
-        levelData.Space = Space;
-        levelData.ListGrid = gridDatas;
-        levelData.AnchorsPosY = Camera.main.GetComponent<RectTransform>().anchoredPosition.y;
-        levelData.FieldOfView = Camera.main.GetComponent<Camera>().fieldOfView;
+        levelData.width = width;
+        levelData.gridHeight = heightGrid;
+        levelData.inventoryHeight = heightInv;
+        levelData.space = space;
+        levelData.listGrid = gridDatas;
+        levelData.anchorsPosY = Camera.main.GetComponent<RectTransform>().anchoredPosition.y;
+        levelData.fieldOfView = Camera.main.GetComponent<Camera>().fieldOfView;
+        levelData.invPosY = parentInv.transform.position.y;
 
         AssetDatabase.CreateAsset(levelData, path);
         AssetDatabase.SaveAssets();
@@ -97,9 +101,9 @@ public class CreateMap : MonoBehaviour
     public void Spawn2()
     {
         //spawn grid
-        SpawnMap(_heightGrid, _width, _parentGrid, ListGridPrefab[0]);
+        SpawnMap(heightGrid, width, parentGrid, listGridPrefab[0]);
         //spawn inventory
-        SpawnMap(_heightInv, _width, _parentInv, _inventoryPrefab);
+        SpawnMap(heightInv, width, parentInv, inventoryPrefab);
     }
 
     private void SpawnMap(int width, int height, Transform parent, GameObject prefab)
@@ -110,18 +114,18 @@ public class CreateMap : MonoBehaviour
             for (int j = 0; j < width; j++)
             {
                 var grid = Instantiate(prefab, Vector3.zero, Quaternion.identity, parent);
-                grid.transform.localPosition = new Vector3(startPos + i * Space, -j * Space, 0);
+                grid.transform.localPosition = new Vector3(startPos + i * space, -j * space, 0);
 
 
                 GridBase gridBase = grid.GetComponent<GridBase>();
                 if (gridBase != null)
                 {
-                    gridBase.Position = new Vector2Int(i, j);
-                    _listGrid.Add(gridBase);
+                    gridBase.position = new Vector2Int(i, j);
+                    listGrid.Add(gridBase);
                 }
                 else
                 {
-                    _listInventory.Add(grid.gameObject);
+                    listInventory.Add(grid.gameObject);
                 }
             }
         }
@@ -130,7 +134,7 @@ public class CreateMap : MonoBehaviour
     private float CalucalteStartPos()
     {
         float startX = 0;
-        startX = (_width % 2 != 0) ? -_width / 2 * Space : -(_width / 2 - 0.5f) * Space;
+        startX = (width % 2 != 0) ? -width / 2 * space : -(width / 2 - 0.5f) * space;
         return startX;
     }
 }

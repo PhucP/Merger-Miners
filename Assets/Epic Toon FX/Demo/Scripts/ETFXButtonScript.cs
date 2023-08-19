@@ -3,18 +3,19 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 namespace EpicToonFX
 {
 
-public class ETFXButtonScript : MonoBehaviour
+public class EtfxButtonScript : MonoBehaviour
 {
-	public GameObject Button;
-	Text MyButtonText;
-	string projectileParticleName;		// The variable to update the text component of the button
+	[FormerlySerializedAs("Button")] public GameObject button;
+	Text _myButtonText;
+	string _projectileParticleName;		// The variable to update the text component of the button
 
-	ETFXFireProjectile effectScript;		// A variable used to access the list of projectiles
-	ETFXProjectileScript projectileScript;
+	EtfxFireProjectile _effectScript;		// A variable used to access the list of projectiles
+	EtfxProjectileScript _projectileScript;
 
 	public float buttonsX;
 	public float buttonsY;
@@ -24,26 +25,26 @@ public class ETFXButtonScript : MonoBehaviour
 	
 	void Start ()
 	{
-		effectScript = GameObject.Find("ETFXFireProjectile").GetComponent<ETFXFireProjectile>();
-		getProjectileNames();
-		MyButtonText = Button.transform.Find("Text").GetComponent<Text>();
-		MyButtonText.text = projectileParticleName;
+		_effectScript = GameObject.Find("ETFXFireProjectile").GetComponent<EtfxFireProjectile>();
+		GetProjectileNames();
+		_myButtonText = button.transform.Find("Text").GetComponent<Text>();
+		_myButtonText.text = _projectileParticleName;
 	}
 
 	void Update ()
 	{
-		MyButtonText.text = projectileParticleName;
+		_myButtonText.text = _projectileParticleName;
 //		print(projectileParticleName);
 	}
 
-	public void getProjectileNames()			// Find and diplay the name of the currently selected projectile
+	public void GetProjectileNames()			// Find and diplay the name of the currently selected projectile
 	{
 		// Access the currently selected projectile's 'ProjectileScript'
-		projectileScript = effectScript.projectiles[effectScript.currentProjectile].GetComponent<ETFXProjectileScript>();
-		projectileParticleName = projectileScript.projectileParticle.name;	// Assign the name of the currently selected projectile to projectileParticleName
+		_projectileScript = _effectScript.projectiles[_effectScript.currentProjectile].GetComponent<EtfxProjectileScript>();
+		_projectileParticleName = _projectileScript.projectileParticle.name;	// Assign the name of the currently selected projectile to projectileParticleName
 	}
 
-	public bool overButton()		// This function will return either true or false
+	public bool OverButton()		// This function will return either true or false
 	{
 		Rect button1 = new Rect(buttonsX, buttonsY, buttonsSizeX, buttonsSizeY);
 		Rect button2 = new Rect(buttonsX + buttonsDistance, buttonsY, buttonsSizeX, buttonsSizeY);

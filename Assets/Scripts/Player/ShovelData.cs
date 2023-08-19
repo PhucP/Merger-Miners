@@ -1,28 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class ShovelData
 {
-    public ShovelType Type;
-    public GameObject Prefab;
-    public int Damage;
-    public int Heal;
-    public int Cost;
+    [FormerlySerializedAs("Type")] public ShovelType type;
+    [FormerlySerializedAs("Prefab")] public GameObject prefab;
+    [FormerlySerializedAs("Damage")] public int damage;
+    [FormerlySerializedAs("Heal")] public int heal;
+    [FormerlySerializedAs("Cost")] public int cost;
 }
 
 [System.Serializable]
 public enum ShovelType
 {
-    LV1,
-    LV2,
-    LV3,
-    LV4,
-    LV5,
-    LV6,
-    LV7,
-    LV8,
-    LV9,
-    LV10
+    Lv1,
+    Lv2,
+    Lv3,
+    Lv4,
+    Lv5,
+    Lv6,
+    Lv7,
+    Lv8,
+    Lv9,
+    Lv10
 }

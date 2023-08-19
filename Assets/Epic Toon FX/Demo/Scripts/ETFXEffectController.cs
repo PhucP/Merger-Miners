@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 namespace EpicToonFX
 {
-    public class ETFXEffectController : MonoBehaviour
+    public class EtfxEffectController : MonoBehaviour
     {
         public GameObject[] effects;
-        private int effectIndex = 0;
+        private int _effectIndex = 0;
 
         [Space(10)]
 
@@ -21,25 +21,25 @@ namespace EpicToonFX
         [Range(0.001f, 0.5f)]
         public float autoRotationSpeed = 0.1f;
 
-        private GameObject currentEffect;
-        private Text effectNameText;
-        private Text effectIndexText;
+        private GameObject _currentEffect;
+        private Text _effectNameText;
+        private Text _effectIndexText;
 
-        private ETFXMouseOrbit etfxMouseOrbit;
+        private EtfxMouseOrbit _etfxMouseOrbit;
 
         private void Awake()
         {
-            effectNameText = GameObject.Find("EffectName").GetComponent<Text>();
-            effectIndexText = GameObject.Find("EffectIndex").GetComponent<Text>();
+            _effectNameText = GameObject.Find("EffectName").GetComponent<Text>();
+            _effectIndexText = GameObject.Find("EffectIndex").GetComponent<Text>();
 
-            etfxMouseOrbit = Camera.main.GetComponent<ETFXMouseOrbit>();
-            etfxMouseOrbit.etfxEffectController = this;
+            _etfxMouseOrbit = Camera.main.GetComponent<EtfxMouseOrbit>();
+            _etfxMouseOrbit.etfxEffectController = this;
         }
 
         void Start()
         {
-            etfxMouseOrbit = Camera.main.GetComponent<ETFXMouseOrbit>();
-            etfxMouseOrbit.etfxEffectController = this;
+            _etfxMouseOrbit = Camera.main.GetComponent<EtfxMouseOrbit>();
+            _etfxMouseOrbit.etfxEffectController = this;
 
             Invoke("InitializeLoop", startDelay);
         }
@@ -61,10 +61,10 @@ namespace EpicToonFX
         {
             if (autoRotation)
             {
-                etfxMouseOrbit.SetAutoRotationSpeed(autoRotationSpeed);
+                _etfxMouseOrbit.SetAutoRotationSpeed(autoRotationSpeed);
 
-                if (!etfxMouseOrbit.isAutoRotating)
-                    etfxMouseOrbit.InitializeAutoRotation();
+                if (!_etfxMouseOrbit.isAutoRotating)
+                    _etfxMouseOrbit.InitializeAutoRotation();
             }
         }
 
@@ -75,13 +75,13 @@ namespace EpicToonFX
 
         public void NextEffect()
         {
-            if (effectIndex < effects.Length - 1)
+            if (_effectIndex < effects.Length - 1)
             {
-                effectIndex++;
+                _effectIndex++;
             }
             else
             {
-                effectIndex = 0;
+                _effectIndex = 0;
             }
 
             CleanCurrentEffect();
@@ -89,13 +89,13 @@ namespace EpicToonFX
 
         public void PreviousEffect()
         {
-            if (effectIndex > 0)
+            if (_effectIndex > 0)
             {
-                effectIndex--;
+                _effectIndex--;
             }
             else
             {
-                effectIndex = effects.Length - 1;
+                _effectIndex = effects.Length - 1;
             }
 
             CleanCurrentEffect();
@@ -105,9 +105,9 @@ namespace EpicToonFX
         {
             StopAllCoroutines();
 
-            if (currentEffect != null)
+            if (_currentEffect != null)
             {
-                Destroy(currentEffect);
+                Destroy(_currentEffect);
             }
 
             StartCoroutine(EffectLoop());
@@ -116,8 +116,8 @@ namespace EpicToonFX
         private IEnumerator EffectLoop()
         {
             //Instantiating effect
-            GameObject effect = Instantiate(effects[effectIndex], transform.position, Quaternion.identity);
-            currentEffect = effect;
+            GameObject effect = Instantiate(effects[_effectIndex], transform.position, Quaternion.identity);
+            _currentEffect = effect;
 
             if (disableLights && effect.GetComponent<Light>())
             {
@@ -130,8 +130,8 @@ namespace EpicToonFX
             }
 
             //Update GUIText with effect name
-            effectNameText.text = effects[effectIndex].name;
-            effectIndexText.text = (effectIndex + 1) + " of " + effects.Length;
+            _effectNameText.text = effects[_effectIndex].name;
+            _effectIndexText.text = (_effectIndex + 1) + " of " + effects.Length;
 
             ParticleSystem particleSystem = effect.GetComponent<ParticleSystem>();
 
@@ -143,8 +143,8 @@ namespace EpicToonFX
                 {
                     if (!particleSystem.main.loop)
                     {
-                        currentEffect.SetActive(false);
-                        currentEffect.SetActive(true);
+                        _currentEffect.SetActive(false);
+                        _currentEffect.SetActive(true);
                     }
                 }
                 else

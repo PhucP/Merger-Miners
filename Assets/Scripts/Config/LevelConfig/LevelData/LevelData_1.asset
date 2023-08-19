@@ -12,62 +12,192 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ef1a63eb53eda409da09c98fad0002, type: 3}
   m_Name: LevelData_1
   m_EditorClassIdentifier: 
-  Width: 5
-  GridHeight: 5
+  Width: 6
+  GridHeight: 15
   InventoryHeight: 2
   Space: 1.25
   ListGrid:
   - Type: 0
-    Position: {x: 2, y: 1}
+    Position: {x: 0, y: 1}
   - Type: 0
-    Position: {x: 2, y: 3}
+    Position: {x: 0, y: 7}
+  - Type: 0
+    Position: {x: 0, y: 10}
+  - Type: 0
+    Position: {x: 0, y: 13}
+  - Type: 0
+    Position: {x: 0, y: 14}
+  - Type: 0
+    Position: {x: 1, y: 0}
+  - Type: 0
+    Position: {x: 1, y: 6}
+  - Type: 0
+    Position: {x: 1, y: 7}
+  - Type: 0
+    Position: {x: 2, y: 2}
+  - Type: 0
+    Position: {x: 2, y: 9}
+  - Type: 0
+    Position: {x: 2, y: 14}
+  - Type: 0
+    Position: {x: 3, y: 4}
+  - Type: 0
+    Position: {x: 3, y: 9}
+  - Type: 0
+    Position: {x: 4, y: 0}
+  - Type: 0
+    Position: {x: 4, y: 3}
+  - Type: 0
+    Position: {x: 4, y: 4}
+  - Type: 0
+    Position: {x: 4, y: 5}
+  - Type: 0
+    Position: {x: 4, y: 8}
+  - Type: 0
+    Position: {x: 4, y: 14}
+  - Type: 0
+    Position: {x: 5, y: 0}
+  - Type: 0
+    Position: {x: 5, y: 6}
+  - Type: 0
+    Position: {x: 5, y: 7}
+  - Type: 0
+    Position: {x: 5, y: 9}
+  - Type: 0
+    Position: {x: 5, y: 11}
+  - Type: 0
+    Position: {x: 5, y: 12}
+  - Type: 0
+    Position: {x: 5, y: 14}
   - Type: 1
     Position: {x: 0, y: 0}
   - Type: 1
     Position: {x: 1, y: 1}
   - Type: 1
-    Position: {x: 2, y: 2}
+    Position: {x: 2, y: 0}
   - Type: 1
+    Position: {x: 2, y: 1}
+  - Type: 2
+    Position: {x: 1, y: 2}
+  - Type: 2
+    Position: {x: 4, y: 2}
+  - Type: 2
+    Position: {x: 0, y: 4}
+  - Type: 3
+    Position: {x: 1, y: 5}
+  - Type: 2
+    Position: {x: 5, y: 3}
+  - Type: 2
+    Position: {x: 5, y: 1}
+  - Type: 2
+    Position: {x: 3, y: 1}
+  - Type: 5
+    Position: {x: 3, y: 0}
+  - Type: 4
+    Position: {x: 1, y: 3}
+  - Type: 2
+    Position: {x: 3, y: 6}
+  - Type: 1
+    Position: {x: 0, y: 8}
+  - Type: 4
+    Position: {x: 1, y: 8}
+  - Type: 1
+    Position: {x: 4, y: 9}
+  - Type: 1
+    Position: {x: 3, y: 13}
+  - Type: 1
+    Position: {x: 2, y: 12}
+  - Type: 1
+    Position: {x: 4, y: 10}
+  - Type: 1
+    Position: {x: 2, y: 4}
+  - Type: 1
+    Position: {x: 1, y: 14}
+  - Type: 2
+    Position: {x: 3, y: 8}
+  - Type: 1
+    Position: {x: 4, y: 11}
+  - Type: 1
+    Position: {x: 0, y: 12}
+  - Type: 6
+    Position: {x: 1, y: 9}
+  - Type: 1
+    Position: {x: 2, y: 13}
+  - Type: 1
+    Position: {x: 0, y: 9}
+  - Type: 1
+    Position: {x: 3, y: 12}
+  - Type: 1
+    Position: {x: 2, y: 10}
+  - Type: 1
+    Position: {x: 1, y: 10}
+  - Type: 3
+    Position: {x: 0, y: 2}
+  - Type: 1
+    Position: {x: 2, y: 7}
+  - Type: 1
+    Position: {x: 1, y: 12}
+  - Type: 1
+    Position: {x: 5, y: 13}
+  - Type: 2
+    Position: {x: 4, y: 13}
+  - Type: 2
+    Position: {x: 1, y: 13}
+  - Type: 3
+    Position: {x: 3, y: 5}
+  - Type: 1
+    Position: {x: 3, y: 11}
+  - Type: 2
+    Position: {x: 0, y: 11}
+  - Type: 3
+    Position: {x: 1, y: 11}
+  - Type: 1
+    Position: {x: 4, y: 7}
+  - Type: 2
+    Position: {x: 5, y: 10}
+  - Type: 1
+    Position: {x: 2, y: 11}
+  - Type: 1
+    Position: {x: 4, y: 12}
+  - Type: 1
+    Position: {x: 1, y: 4}
+  - Type: 3
+    Position: {x: 2, y: 6}
+  - Type: 3
+    Position: {x: 2, y: 3}
+  - Type: 3
+    Position: {x: 5, y: 5}
+  - Type: 2
+    Position: {x: 5, y: 2}
+  - Type: 2
+    Position: {x: 5, y: 8}
+  - Type: 1
+    Position: {x: 0, y: 5}
+  - Type: 1
+    Position: {x: 0, y: 3}
+  - Type: 1
+    Position: {x: 5, y: 4}
+  - Type: 1
+    Position: {x: 4, y: 1}
+  - Type: 5
+    Position: {x: 2, y: 5}
+  - Type: 3
     Position: {x: 3, y: 3}
   - Type: 1
-    Position: {x: 4, y: 4}
+    Position: {x: 0, y: 6}
   - Type: 1
-    Position: {x: 4, y: 0}
-  - Type: 1
-    Position: {x: 3, y: 1}
-  - Type: 1
-    Position: {x: 1, y: 3}
-  - Type: 1
-    Position: {x: 0, y: 4}
-  - Type: 2
-    Position: {x: 0, y: 1}
-  - Type: 2
-    Position: {x: 1, y: 0}
-  - Type: 2
-    Position: {x: 3, y: 0}
-  - Type: 2
-    Position: {x: 4, y: 1}
-  - Type: 2
-    Position: {x: 4, y: 3}
-  - Type: 2
-    Position: {x: 3, y: 4}
-  - Type: 2
-    Position: {x: 1, y: 4}
-  - Type: 2
-    Position: {x: 0, y: 3}
-  - Type: 5
-    Position: {x: 4, y: 2}
-  - Type: 5
-    Position: {x: 0, y: 2}
-  - Type: 6
-    Position: {x: 2, y: 4}
-  - Type: 6
-    Position: {x: 2, y: 0}
-  - Type: 7
-    Position: {x: 1, y: 2}
-  - Type: 7
     Position: {x: 3, y: 2}
+  - Type: 1
+    Position: {x: 4, y: 6}
+  - Type: 1
+    Position: {x: 3, y: 7}
+  - Type: 4
+    Position: {x: 3, y: 10}
+  - Type: 1
+    Position: {x: 3, y: 14}
+  - Type: 3
+    Position: {x: 2, y: 8}
   AnchorsPosY: 0
-  FieldOfView: 60
-  InvPosY: 4
+  FieldOfView: 70
+  InvPosY: 5
   BlockPosY: 0

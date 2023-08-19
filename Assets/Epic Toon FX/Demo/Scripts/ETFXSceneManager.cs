@@ -3,16 +3,17 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 namespace EpicToonFX
 {
 
-public class ETFXSceneManager : MonoBehaviour
+public class EtfxSceneManager : MonoBehaviour
 {
-	public bool GUIHide = false;
-	public bool GUIHide2 = false;
-	public bool GUIHide3 = false;	
-	public bool GUIHide4 = false;
+	[FormerlySerializedAs("GUIHide")] public bool guiHide = false;
+	[FormerlySerializedAs("GUIHide2")] public bool guiHide2 = false;
+	[FormerlySerializedAs("GUIHide3")] public bool guiHide3 = false;	
+	[FormerlySerializedAs("GUIHide4")] public bool guiHide4 = false;
 	
     public void LoadScene2DDemo()  {
 		SceneManager.LoadScene ("etfx_2ddemo");
@@ -110,9 +111,9 @@ public class ETFXSceneManager : MonoBehaviour
  
      if(Input.GetKeyDown(KeyCode.L))
 	 {
-         GUIHide = !GUIHide;
+         guiHide = !guiHide;
      
-         if (GUIHide)
+         if (guiHide)
 		 {
              GameObject.Find("CanvasSceneSelect").GetComponent<Canvas> ().enabled = false;
          }
@@ -123,9 +124,9 @@ public class ETFXSceneManager : MonoBehaviour
      }
 	      if(Input.GetKeyDown(KeyCode.J))
 	 {
-         GUIHide2 = !GUIHide2;
+         guiHide2 = !guiHide2;
      
-         if (GUIHide2)
+         if (guiHide2)
 		 {
              GameObject.Find("Canvas").GetComponent<Canvas> ().enabled = false;
          }
@@ -136,9 +137,9 @@ public class ETFXSceneManager : MonoBehaviour
      }
 		if(Input.GetKeyDown(KeyCode.H))
 	 {
-         GUIHide3 = !GUIHide3;
+         guiHide3 = !guiHide3;
      
-         if (GUIHide3)
+         if (guiHide3)
 		 {
              GameObject.Find("ParticleSysDisplayCanvas").GetComponent<Canvas> ().enabled = false;
          }
@@ -149,9 +150,9 @@ public class ETFXSceneManager : MonoBehaviour
      }
 	 	if(Input.GetKeyDown(KeyCode.K))
 	 {
-         GUIHide4 = !GUIHide4;
+         guiHide4 = !guiHide4;
      
-         if (GUIHide3)
+         if (guiHide3)
 		 {
              GameObject.Find("CanvasTips").GetComponent<Canvas> ().enabled = false;
          }

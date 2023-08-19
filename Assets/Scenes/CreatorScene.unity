@@ -584,7 +584,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 501648287}
-  - component: {fileID: 501648288}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -609,19 +608,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &501648288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 501648286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bac7ce1012c7004d9db89d22577367e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  WinPanel: {fileID: 339191400}
 --- !u!1 &738400201
 GameObject:
   m_ObjectHideFlags: 0
@@ -1236,8 +1222,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _level: 1
-  _width: 4
-  _heightGrid: 5
+  _width: 5
+  _heightGrid: 8
   _heightInv: 2
   Space: 1.25
   _inventoryPrefab: {fileID: 2455439299254242304, guid: b8e737702661a52429a865a2d483d020, type: 3}

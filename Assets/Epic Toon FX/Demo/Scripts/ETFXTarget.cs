@@ -4,25 +4,25 @@ using System.Collections;
 namespace EpicToonFX
 {
 
-public class ETFXTarget : MonoBehaviour
+public class EtfxTarget : MonoBehaviour
 {
     [Header("Effect shown on target hit")]
 	public GameObject hitParticle;
     [Header("Effect shown on target respawn")]
 	public GameObject respawnParticle;
-	private Renderer targetRenderer;
-	private Collider targetCollider;
+	private Renderer _targetRenderer;
+	private Collider _targetCollider;
 
     void Start()
     {
-		targetRenderer = GetComponent<Renderer>();
-		targetCollider = GetComponent<Collider>();
+		_targetRenderer = GetComponent<Renderer>();
+		_targetCollider = GetComponent<Collider>();
     }
 
     void SpawnTarget()
     {
-        targetRenderer.enabled = true; //Shows the target
-		targetCollider.enabled = true; //Enables the collider
+        _targetRenderer.enabled = true; //Shows the target
+		_targetCollider.enabled = true; //Enables the collider
 		GameObject respawnEffect = Instantiate(respawnParticle, transform.position, transform.rotation) as GameObject; //Spawns attached respawn effect
 		Destroy(respawnEffect, 3.5f); //Removes attached respawn effect after x seconds
     }
@@ -36,8 +36,8 @@ public class ETFXTarget : MonoBehaviour
 				//Debug.Log("Target hit!");
 				GameObject destructibleEffect = Instantiate(hitParticle, transform.position, transform.rotation) as GameObject; // Spawns attached hit effect
 				Destroy(destructibleEffect, 2f); // Removes hit effect after x seconds
-				targetRenderer.enabled = false; // Hides the target
-				targetCollider.enabled = false; // Disables target collider
+				_targetRenderer.enabled = false; // Hides the target
+				_targetCollider.enabled = false; // Disables target collider
 				StartCoroutine(Respawn()); // Sets timer for respawning the target
             }
         }

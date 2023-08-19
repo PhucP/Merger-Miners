@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 namespace EpicToonFX
 {
-    public class ETFXEffectControllerPooled : MonoBehaviour
+    public class EtfxEffectControllerPooled : MonoBehaviour
     {
         public GameObject[] effects;
-        private List<GameObject> effectsPool;
-        private int effectIndex = 0;
+        private List<GameObject> _effectsPool;
+        private int _effectIndex = 0;
 
         [Space(10)]
 
@@ -23,29 +23,29 @@ namespace EpicToonFX
         [Range(0.001f, 0.5f)]
         public float autoRotationSpeed = 0.1f;
 
-        private GameObject currentEffect;
-        private Text effectNameText;
-        private Text effectIndexText;
+        private GameObject _currentEffect;
+        private Text _effectNameText;
+        private Text _effectIndexText;
 
-        private ETFXMouseOrbit etfxMouseOrbit;
+        private EtfxMouseOrbit _etfxMouseOrbit;
 
         //Caching components
         private void Awake()
         {
-            effectNameText = GameObject.Find("EffectName").GetComponent<Text>();
-            effectIndexText = GameObject.Find("EffectIndex").GetComponent<Text>();
+            _effectNameText = GameObject.Find("EffectName").GetComponent<Text>();
+            _effectIndexText = GameObject.Find("EffectIndex").GetComponent<Text>();
 
-            etfxMouseOrbit = Camera.main.GetComponent<ETFXMouseOrbit>();
-            etfxMouseOrbit.etfxEffectControllerPooled = this;
+            _etfxMouseOrbit = Camera.main.GetComponent<EtfxMouseOrbit>();
+            _etfxMouseOrbit.etfxEffectControllerPooled = this;
 
             //Pooling
-            effectsPool = new List<GameObject>();
+            _effectsPool = new List<GameObject>();
 
             for (int i = 0; i < effects.Length; i++)
             {
                 GameObject effect = Instantiate(effects[i], transform.position, Quaternion.identity);
                 effect.transform.parent = transform;
-                effectsPool.Add(effect);
+                _effectsPool.Add(effect);
 
                 effect.SetActive(false);
             }
@@ -73,10 +73,10 @@ namespace EpicToonFX
         {
             if (autoRotation)
             {
-                etfxMouseOrbit.SetAutoRotationSpeed(autoRotationSpeed);
+                _etfxMouseOrbit.SetAutoRotationSpeed(autoRotationSpeed);
 
-                if (!etfxMouseOrbit.isAutoRotating)
-                    etfxMouseOrbit.InitializeAutoRotation();
+                if (!_etfxMouseOrbit.isAutoRotating)
+                    _etfxMouseOrbit.InitializeAutoRotation();
             }
         }
 
@@ -87,13 +87,13 @@ namespace EpicToonFX
 
         public void NextEffect()
         {
-            if (effectIndex < effects.Length - 1)
+            if (_effectIndex < effects.Length - 1)
             {
-                effectIndex++;
+                _effectIndex++;
             }
             else
             {
-                effectIndex = 0;
+                _effectIndex = 0;
             }
 
             CleanCurrentEffect();
@@ -101,13 +101,13 @@ namespace EpicToonFX
 
         public void PreviousEffect()
         {
-            if (effectIndex > 0)
+            if (_effectIndex > 0)
             {
-                effectIndex--;
+                _effectIndex--;
             }
             else
             {
-                effectIndex = effects.Length - 1;
+                _effectIndex = effects.Length - 1;
             }
 
             CleanCurrentEffect();
@@ -117,9 +117,9 @@ namespace EpicToonFX
         {
             StopAllCoroutines();
 
-            if (currentEffect != null)
+            if (_currentEffect != null)
             {
-                currentEffect.SetActive(false);
+                _currentEffect.SetActive(false);
             }
 
             StartCoroutine(EffectLoop());
@@ -128,24 +128,24 @@ namespace EpicToonFX
         private IEnumerator EffectLoop()
         {
             //Pooling effect
-            currentEffect = effectsPool[effectIndex];
-            currentEffect.SetActive(true);
+            _currentEffect = _effectsPool[_effectIndex];
+            _currentEffect.SetActive(true);
 
-            if (disableLights && currentEffect.GetComponent<Light>())
+            if (disableLights && _currentEffect.GetComponent<Light>())
             {
-                currentEffect.GetComponent<Light>().enabled = false;
+                _currentEffect.GetComponent<Light>().enabled = false;
             }
 
-            if (disableSound && currentEffect.GetComponent<AudioSource>())
+            if (disableSound && _currentEffect.GetComponent<AudioSource>())
             {
-                currentEffect.GetComponent<AudioSource>().enabled = false;
+                _currentEffect.GetComponent<AudioSource>().enabled = false;
             }
 
             //Update UI
-            effectNameText.text = effects[effectIndex].name;
-            effectIndexText.text = (effectIndex + 1) + " of " + effects.Length;
+            _effectNameText.text = effects[_effectIndex].name;
+            _effectIndexText.text = (_effectIndex + 1) + " of " + effects.Length;
 
-            ParticleSystem particleSystem = currentEffect.GetComponent<ParticleSystem>();
+            ParticleSystem particleSystem = _currentEffect.GetComponent<ParticleSystem>();
 
             while (true)
             {
@@ -155,8 +155,8 @@ namespace EpicToonFX
                 {
                     if (!particleSystem.main.loop)
                     {
-                        currentEffect.SetActive(false);
-                        currentEffect.SetActive(true);
+                        _currentEffect.SetActive(false);
+                        _currentEffect.SetActive(true);
                     }
                 }
                 else
